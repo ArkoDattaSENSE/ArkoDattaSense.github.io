@@ -1,0 +1,154 @@
+<!-- ================= DESKTOP BANNER WITH OVERLAY ================= -->
+<div class="banner-wrapper d-none d-md-block">
+    <img src="assets/banner.png" class="banner" alt="Banner">
+    <div class="banner-overlay"></div>
+
+    <div class="banner-content container">
+        <div class="row align-items-center">
+            <div class="col-md-3 text-center">
+                <img src="assets/thumbnail.png" class="profile-pic-banner" alt="Profile">
+            </div>
+            <div class="col-md-9">
+                <h2>Arko Datta</h2>
+                <p class="text-muted">PhD Scholar at SeNSE Lab, IIT Madras</p>
+                <div class="social-icons">
+                    <a href="/assets/arko-resume.pdf"><i class="fa-solid fa-file"></i> CV</a>
+                    <a href="mailto:arko@cse.iitm.ac.in"><i class="fa-solid fa-envelope"></i> Email</a>
+                    <a href="https://scholar.google.com/citations?user=R0aOQfQAAAAJ&hl=en"><i
+                            class="fa-brands fa-google-scholar"></i> Scholar</a>
+                    <a href="https://www.linkedin.com/in/arkosense/?originalSubdomain=in"><i
+                            class="fa-brands fa-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= MOBILE HEADER ================= -->
+<img src="assets/banner.png" class="banner d-md-none" alt="Banner">
+
+<div class="container d-md-none text-center">
+    <img src="assets/thumbnail.png" class="profile-pic mt-3">
+    <h2 class="mt-3">Arko Datta</h2>
+    <p class="text-muted">PhD Scholar at SeNSE Lab, IIT Madras</p>
+</div>
+
+<!-- ================= BIO ================= -->
+<div class="container my-4 fs-5">
+    <p class="my-5">
+        I am a PhD Scholar in the <a href="https://www.cse.iitm.ac.in/">Department of Computer Science and
+            Engineering</a>, <a href="iitm.ac.in">IIT Madras</a> working in <a href="sense.iitm.ac.in">Sensing and
+            Networked Systems Engineering (SeNSE) Lab</a>, guided by <a href="cse.iitm.ac.in/~ayon">Dr. Ayon
+            Chakraborty</a>. I am building systems that enhance the quality of experience in wireless networking and
+        sensing applications by leveraging visual data and digital twins.<br>
+        I completed my Masters in Technology from the <a
+            href="https://nitdgp.ac.in/department/computer-science-engineering">Department of Computer Science and
+            Engineering</a>, <a href="nitdgp.ac.in">National Institute of Technology, Durgapur</a> under the guidance of
+        <a href="https://nitdgp.ac.in/department/computer-science-engineering/faculty-1/sujoy-saha-1">Dr. Sujoy Saha</a>
+        and co-mentored by <a
+            href="https://nitdgp.ac.in/department/computer-science-engineering/faculty-1/subrata-nandi">Prof. Subrata
+            Nandi</a>, where I worked with the Systems Research Lab and earned my foundations in Systems Design.<br>
+        I have done my Bachelors in Technology from the <a href="https://cse.kiit.ac.in/">School of Computer Science and
+            Engineering</a>, <a href="kiit.ac.in">KIIT-DU</a>. I have completed my entire school life in <a
+            href="https://www.mpbfhsschool.com/">M.P. Birla Foundation Higher Secondary School</a>.<br>
+        Though I hail from the city of joy, <a href="https://en.wikipedia.org/wiki/Kolkata">Kolkata, India</a>, I have
+        spent most of my adult life away from the city, learning from different cultures, but still staying true to my
+        roots.<br>
+    </p>
+</div>
+
+<!-- ================= DESKTOP CONTENT ================= -->
+<div class="container content d-none d-md-grid">
+
+    <!-- ROW 1 -->
+    <div class="row content-row g-3">
+        <div class="col-md-8">
+            <div class="section-card">
+                <h4 class="section-header">
+                    Publications<br>
+                    <small>(Click on a thumbnail to know more)</small>
+                </h4>
+                <div class="section-body">
+                    <div id="publications-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="section-card">
+                <h4 class="section-header">News</h4>
+                <div class="section-body">
+                    <ul id="news-content"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 2 -->
+    <div class="row content-row g-3">
+        <div class="col-md-4">
+            <div class="section-card">
+                <h4 class="section-header">Awards</h4>
+                <div class="section-body" id="awards-content"></div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="section-card">
+                <h4 class="section-header">Teaching</h4>
+                <div class="section-body" id="teaching-content"></div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="section-card">
+                <h4 class="section-header">Service</h4>
+                <div class="section-body" id="service-content"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ================= MOBILE TABS ================= -->
+<div class="container d-md-none mt-4">
+    <ul class="nav nav-tabs">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab"
+                data-bs-target="#pubs">Publications</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#news">News</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#awards">Awards</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#teaching">Teaching</button>
+        </li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#service">Service</button>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-3">
+        <div class="tab-pane fade show active" id="pubs"></div>
+        <div class="tab-pane fade" id="news">
+            <ol id="news-content-mobile"></ol>
+        </div>
+        <div class="tab-pane fade" id="awards"></div>
+        <div class="tab-pane fade" id="teaching"></div>
+        <div class="tab-pane fade" id="service"></div>
+    </div>
+</div>
+
+<!-- ================= PUBLICATION MODAL ================= -->
+<div class="modal fade" id="pubModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"></h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Authors:</strong> <span id="modalAuthors"></span></p>
+                <p><strong>Venue:</strong> <span id="modalVenue"></span></p>
+                <hr>
+                <p id="modalAbstract"></p>
+            </div>
+            <div class="modal-footer" id="modalActions"></div>
+        </div>
+    </div>
+</div>

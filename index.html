@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Arko Datta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar d-none navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav" id="nav-items"></ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile bottom hamburger -->
+  <button class="btn btn-primary d-lg-none d-none mobile-menu-btn"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <!-- Dynamic page content -->
+  <main id="content"></main>
+
+  <!-- Footer -->
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container text-center">
+      <p class="text-muted mb-1">
+        © 2026 Arko Datta. All rights reserved.
+      </p>
+      <p class="text-muted small mb-0">
+        Last updated: January 2026
+      </p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>

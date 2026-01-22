@@ -1,0 +1,63 @@
+[
+    {
+      "order": 1,
+      "thumbnail": "assets/argos_thumb.png",
+      "title": "ARGOS: Leveraging Visual Priors for Scalable Wireless Navigation in Dynamic Environments",
+      "authors": "<b>Arko Datta</b>, Tharaneeshwaran V U, Aravindh Sriram Kumar A G, Ayon Chakraborty",
+      "venue": "PerCom 2026",
+      "abstract": "Performance of wireless navigation systems degrade sharply in industrial environments dominated by metallic clutter and heavy multipath. The primary cause lies in how anchors are placed or selected. Methods that succeed in open spaces fail under severe non-line-of-sight (nLoS) and frequent layout changes, for instance, induced by moving forklifts or shifting shelves. We introduce Argos, a multimodal wireless digital twin that fuses visual and RF information to optimize anchor selection. Visual imagery reconstructs the 3D layout, updated continuously via existing surveillance cameras, while RF measurements capture material-specific attenuation and reflections. We show that layout priors alone are insufficient; combining them with the required RF optics yields a material-aware channel model that predicts range errors under severe nLoS. Argos adapts proactively to environmental changes, without the requirement of repeated RF calibration or retraining, sustaining sub-meter localization accuracy in dynamic scenes. We validate Argos in a 120 m<sup>2</sup> factory testbed spanning over 700 locations, where the digital twin is built from 5K RGB images and 0.4M UWB CIR samples. To our knowledge, this is the first system to exploit visual priors for adaptive orchestration of wireless navigation infrastructure.",
+      "pdf": "assets/argos_paper.pdf",
+      "website": "https://vizloc.github.io/demo-vis/"
+    },
+    {
+        "order": 2,
+        "thumbnail": "assets/coms_poster_thumb.png",
+        "title": "Adaptive Threshold Learning for Robust First-Path Detection in UWB Ranging",
+        "authors": "Shrishti Bekal Mudiakal, Akash Kumar Paul, <b>Arko Datta</b>, Ayon Chakraborty",
+        "venue": "COMSNETS 2026",
+        "abstract": "Ultra-wideband (UWB) signals are widely used for indoor localization systems, yet its accuracy critically depends on reliably detecting the first path (FP) in the channel impulse response. Commodity receivers employ fixed or heuristic leading-edge thresholds, which often fail under multipath and NLoS conditions, introducing a First-Path Misprediction Degree (∆FMD) that biases ToA/ToF estimates. This work presents a data-driven framework that adaptively predicts optimal LDE thresholds using PCA-compressed CIR features and gradient-boosted regression (XGBoost). Evaluations on public datasets show that the method reduces ∆FMD and improves ranging precision compared to statistical baselines and vendor heuristics, offering a robust alternative for indoor environments.",
+        "pdf": "",
+        "website": ""
+      },
+      {
+        "order": 3,
+        "thumbnail": "assets/iAirGuard_thumb.png",
+        "title": "iAirGuard: A Modular IoT Architecture with Dynamic Sampling and TinyML-Based Fault Detection for Air Quality Monitoring",
+        "authors": "Molay Mondal, <b>Arko Datta</b>, Prashanth Durgam, Astom Mondal, Khushi Shyam, Khushi Shyam, Subrata Nandi, Sanghita Bhattacharjee and Sujoy Saha",
+        "venue": "COMSNETS 2026",
+        "abstract": "Conventional high-precision stations, which are scattered, still set a high price and are not widely maintained, while many low-cost systems encounter the problems of drifting calibration, low reliability, and reliance on centralization. iAirGuard’s limitation is solved with a service centric architecture structured in four layers where the layers are; sensor nodes, data storage, service modules, and user interfaces. Communication between the nodes, which are based on ESP32-S3 and have PM, CO, CO2 and VOC sensors with BLE/Wi-Fi connectivity, is done through a lightweight MQTT protocol. The framework puts forward three main innovations: (i) adaptive dynamic sampling which modifies the sampling rates based on real-time environmental variations to save power and prolong the life of the sensor; (ii) on-node TinyML-based AQI prediction for real-time inference; and (iii) fault-resilient secondary sensing that uses threshold-based learning mechanisms to identify sensor drift. The experimental tests kitchen, office and outdoors reveal that the reduction of storage and bandwidth is between 45 and 58 percent, consequently, the daily data transmission is down from 0.275 MB to 0.155 MB while still giving 100 percent synchronization reliability. The entire hardware, firmware, and software stack being open-source allows transparency, reproducibility, and extensibility, thus, iAirGuard is characterized as a strong, cheap, and ecological system for IoT-enabled air quality monitoring over the long term.",
+        "pdf": "",
+        "website": ""
+      },
+      {
+        "order": 4,
+        "thumbnail": "assets/pollusensecheck.png",
+        "title": "PolluSenseCheck: Cost Effective TinyML-based Air Quality Monitoring System with In-Built Sensor Fault Detection",
+        "authors": "<b>Arko Datta</b>, Joyita Chakraborty, Pabitra Majhi, Astom Mondal, Satyaki Roy, Subrata Nandi and Sujoy Saha",
+        "venue": "COMSNETS 2025",
+        "abstract": "Air pollution is a significant contributor to respiratory diseases, posing severe health risks globally. Traditional air quality monitoring stations, while effective, are too expensive, particularly in developing nations like India, where numerous monitoring sites may be required to cover diverse urban and industrial regions. Existing cost-effective air quality monitoring systems are rendered inadequate by their reliance on sensors that are prone to drift, which necessitates frequent recalibration. This study addresses the gap by developing a cost-effective air quality monitoring device capable of detecting particulate matter, carbon monoxide (CO), temperature, and humidity, and incorporating self-diagnostic capabilities. It enhances reliability through a dual-sensing mechanism: it calculates the Air Quality Index (AQI) directly and uses a TinyML model to provide secondary-sensed AQI estimations. Deviations between these two AQI values signal sensor malfunction, which is tracked by a proposed algorithm, Interocept, that assigns fault scores to the sensors. Models were created for eight cities, showing accuracies from 0.69 – 0.89 for dust and 0.76 – 0.95 for CO. These models were optimized for real-time performance by converting them into TensorFlow Lite micro-models, allowing deployment on the device itself for continuous, autonomous sensor health diagnostics and improved long-term air quality management systems.",
+        "pdf": "assets/pollusensecheck_paper.pdf",
+        "website": "https://www.youtube.com/watch?v=PRj5PkJxbcM"
+      },
+      {
+        "order": 5,
+        "thumbnail": "assets/icdcn_workshop_thumb.png",
+        "title": "Efficient Air Quality Index Prediction on Resource-Constrained Devices using TinyML: Design, Implementation, and Evaluation",
+        "authors": "<b>Arko Datta</b>, Aniruddha Pal, Ranbir Marandi, Nilanjan Chattaraj, Subrata Nandi, Sujoy Saha",
+        "venue": "ICDCN 2024",
+        "abstract": "These days, mobile/handheld air quality monitoring devices primarily sense pollutants and send them to the cloud without performing intelligent processing, such as soft calibration, sensor fault detection, or any onboard predictions. This paper explores the feasibility of harnessing Tiny Machine Learning (TinyML) to develop a compact system for inferring environmental pollution levels at a device’s location. Our primary challenge lies in fitting a trained machine-learning model within the device’s limited memory without compromising its accuracy or inference speed. Building upon the correlation between the Air Quality Index (AQI) and various meteorological factors, we propose a TinyML-based framework that predicts AQI using temperature, humidity, internet-sourced meteorological data, and temporal information collected through a web crawler. Our contributions encompass sensor activation, system design on a Raspberry Pi Pico W board, and hyperparameter tuning of machine learning models, culminating in an efficient XGBoost implementation within the 2MB memory constraint, achieving 75.2% accuracy with a 1615μs latency. Moreover, an accuracy of 60% was observed when a real-time validation was carried out. As per our knowledge, this system is the first-of-its-kind device that tries to embed some intelligence into a mobile air quality sensing device.",
+        "pdf": "assets/icdcn_workshop_paper.pdf",
+        "website": "https://youtu.be/hkRU-BqhsAE?si=gcEj9UY8biKOdfub"
+      },
+      {
+        "order": 6,
+        "thumbnail": "assets/icdcn_poster_thumb.png",
+        "title": "Real-Time Air Quality Predictions for Smart Cities using TinyML",
+        "authors": "<b>Arko Datta</b>, Aniruddha Pal, Ranbir Marandi, Nilanjan Chattaraj, Subrata Nandi, Sujoy Saha",
+        "venue": "ICDCN 2024",
+        "abstract": "This paper explores the feasibility of using Tiny Machine Learning (TinyML) to develop a compact system for inferring environmental pollution levels at a device’s location. Leveraging the correlation between the Air Quality Index (AQI), the localised temperature and humidity, and various other meteorological and temporal factors, we propose a first-of-its-kind device that tries to embed some intelligence into a mobile air quality sensing device that predicts the local AQI using the local temperature and humidity collected through sensors, and internet-sourced meteorological and temporal information collected through a web crawler. A dust particle sensor has been added to calculate the real AQI, for validating the inference. Our contributions culminate in an efficient C/C++ based XGBoost implementation within a 2MB memory constraint, achieving 75.2% accuracy with a 1615μs latency.",
+        "pdf": "assets/icdcn_poster_paper.pdf",
+        "website": ""
+      }
+  ]
+  
