@@ -59,13 +59,57 @@ function loadPublications() {
 function enablePublicationClicks() {
   document.querySelectorAll('[data-role="pub-grid"]').forEach(grid => {
     grid.onclick = e => {
+      // Handle thumbnail clicks
       const img = e.target.closest(".pub-thumb");
-      if (!img) return;
+      if (img) {
+        const idx = img.dataset.pubIndex;
+        openModal(window.__PUBS__[idx]);
+        return;
+      }
 
-      const idx = img.dataset.pubIndex;
-      openModal(window.__PUBS__[idx]);
+      // Handle filter badge clicks
+      const badge = e.target.closest(".filter-badge");
+      if (badge) {
+        e.stopPropagation();
+        const filterType = badge.dataset.filterType;
+        const filterValue = badge.dataset.filterValue;
+        
+        if (filterType === "vertical") {
+          ACTIVE_VERTICAL = filterValue;
+          updateAllFilters();
+        } else if (filterType === "type") {
+          ACTIVE_TYPE = filterValue;
+          updateAllFilters();
+        }
+        
+        updateVerticalDescription();
+        renderFilteredPublications();
+      }
     };
   });
+}
+
+function updateAllFilters() {
+  // Update desktop filters
+  const dVert = document.getElementById("filter-vertical");
+  const dType = document.getElementById("filter-type");
+  if (dVert) dVert.value = ACTIVE_VERTICAL;
+  if (dType) dType.value = ACTIVE_TYPE;
+
+  // Update mobile filters
+  const mVert = document.querySelector(".filter-vertical");
+  const mType = document.querySelector(".filter-type");
+  if (mVert) mVert.value = ACTIVE_VERTICAL;
+  if (mType) mType.value = ACTIVE_TYPE;
+
+  // Update modal filters
+  const modalVert = document.getElementById("modal-filter-vertical");
+  const modalType = document.getElementById("modal-filter-type");
+  if (modalVert) modalVert.value = ACTIVE_VERTICAL;
+  if (modalType) modalType.value = ACTIVE_TYPE;
+
+  // Update modal vertical description
+  updateModalVerticalDescription();
 }
 
 function openModal(pub) {
@@ -391,8 +435,14 @@ function createPublicationsGrid(pubs) {
             <p class="small text-muted mb-2">${pub.venue}</p>
             
             <div class="mb-2 d-flex gap-2 flex-wrap">
-              <span class="badge bg-primary">${verticalName}</span>
-              <span class="badge bg-secondary">${typeName}</span>
+              <span class="badge bg-primary filter-badge" 
+                    data-filter-type="vertical" 
+                    data-filter-value="${pub.research_vertical}"
+                    style="cursor:pointer">${verticalName}</span>
+              <span class="badge bg-secondary filter-badge" 
+                    data-filter-type="type" 
+                    data-filter-value="${pub.publication_type}"
+                    style="cursor:pointer">${typeName}</span>
             </div>
 
             <div class="mt-auto d-flex gap-2">
