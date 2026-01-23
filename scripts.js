@@ -27,7 +27,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (i === 0) loadPage(p.link);
       });
     });
+
+  // Update sticky filter position on resize
+  updateStickyFilterPosition();
+  window.addEventListener("resize", updateStickyFilterPosition);
 });
+
+function updateStickyFilterPosition() {
+  const tabs = document.querySelector(".nav-tabs");
+  const filtersPanel = document.getElementById("filters-mobile");
+  
+  if (tabs && filtersPanel && window.innerWidth < 768) {
+    const tabsHeight = tabs.offsetHeight;
+    filtersPanel.style.top = `${tabsHeight}px`;
+  }
+}
 
 function loadPage(page) {
   fetch(`pages/${page}`)
@@ -76,14 +90,25 @@ function enablePublicationClicks() {
         
         if (filterType === "vertical") {
           ACTIVE_VERTICAL = filterValue;
-          updateAllFilters();
         } else if (filterType === "type") {
           ACTIVE_TYPE = filterValue;
-          updateAllFilters();
         }
         
+        // 1. Update all dropdown selections (Main, Mobile, and Modal)
+        updateAllFilters();
+        
+        // 2. Update descriptions (Main and Mobile)
         updateVerticalDescription();
+        
+        // 3. Re-render the main page background
         renderFilteredPublications();
+
+        // 4. CRITICAL: Re-render the modal content if it's open
+        const modalElement = document.getElementById("publicationsModal");
+        const isModalOpen = modalElement && modalElement.classList.contains('show');
+        if (isModalOpen) {
+            renderModalPublications();
+        }
       }
     };
   });
@@ -352,8 +377,8 @@ function renderModalPublications() {
 
   container.innerHTML = createPublicationsGrid(pubs);
   
-  // Enable clicks in modal
-  enablePublicationClicks();
+  // Enable clicks in modal - need to wait for DOM update
+  setTimeout(() => enablePublicationClicks(), 50);
 }
 
 function updateVerticalDescription() {
@@ -409,6 +434,9 @@ function renderFilteredPublications() {
 
   // Enable clicks
   enablePublicationClicks();
+  
+  // Update sticky position after content changes
+  setTimeout(updateStickyFilterPosition, 100);
 }
 
 function createPublicationsGrid(pubs) {
@@ -438,10 +466,14 @@ function createPublicationsGrid(pubs) {
               <span class="badge bg-primary filter-badge" 
                     data-filter-type="vertical" 
                     data-filter-value="${pub.research_vertical}"
+                    role="button"
+                    tabindex="0"
                     style="cursor:pointer">${verticalName}</span>
               <span class="badge bg-secondary filter-badge" 
                     data-filter-type="type" 
                     data-filter-value="${pub.publication_type}"
+                    role="button"
+                    tabindex="0"
                     style="cursor:pointer">${typeName}</span>
             </div>
 
