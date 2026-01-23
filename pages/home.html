@@ -80,13 +80,41 @@
     <div class="row content-row g-3">
         <div class="col-md-8">
             <div class="section-card">
-                <h4 class="section-header">
-                    Publications<br>
-                    <small>(Click on a thumbnail to know more)</small>
+                <h4 class="section-header d-flex justify-content-between align-items-center">
+                    <span>
+                        Publications<br>
+                        <small>(Click on a thumbnail to know more)</small>
+                    </span>
+                    <button id="expand-publications" class="btn btn-sm btn-outline-primary" title="Expand Publications">
+                        <i class="fa-solid fa-expand"></i>
+                    </button>
                 </h4>
                 <div class="section-body">
-                    <div id="publications-content"></div>
+                    <div id="publications-wrapper">
+                        <!-- FILTERS live here -->
+                        <div class="mb-3">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-12 col-md-4">
+                                    <select id="filter-vertical" class="form-select form-select-sm"></select>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <select id="filter-type" class="form-select form-select-sm"></select>
+                                </div>
+                                <div class="col-12 col-md-4 text-md-end">
+                                    <button id="clear-filters" class="btn btn-sm btn-outline-secondary w-100 w-md-auto">
+                                        Clear Filters
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="vertical-description" class="mt-2 small text-muted" style="display:none"></div>
+                        </div>
+
+                        <!-- GRID goes here -->
+                        <div id="publications-content"></div>
+                    </div>
                 </div>
+
             </div>
         </div>
 
@@ -129,8 +157,9 @@
 <!-- ================= MOBILE TABS ================= -->
 <div class="container d-md-none mt-4">
     <ul class="nav nav-tabs">
-        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab"
-                data-bs-target="#pubs">Publications</button></li>
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pubs">Publications</button>
+        </li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#news">News</button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#awards">Awards</button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#teaching">Teaching</button>
@@ -140,7 +169,21 @@
     </ul>
 
     <div class="tab-content mt-3">
-        <div class="tab-pane fade show active" id="pubs"></div>
+        <div class="tab-pane fade show active" id="pubs">
+
+            <!-- MOBILE FILTERS -->
+            <div class="mb-3" id="filters-mobile">
+                <select class="form-select form-select-sm mb-2 filter-vertical"></select>
+                <select class="form-select form-select-sm mb-2 filter-type"></select>
+                <button class="btn btn-sm btn-outline-secondary w-100 clear-filters">
+                    Clear Filters
+                </button>
+                <div class="mt-2 small text-muted vertical-description" style="display:none"></div>
+            </div>
+
+            <div id="publications-content-mobile"></div>
+        </div>
+
         <div class="tab-pane fade" id="news">
             <ol id="news-content-mobile"></ol>
         </div>
@@ -165,6 +208,42 @@
                 <p id="modalAbstract"></p>
             </div>
             <div class="modal-footer" id="modalActions"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= PUBLICATIONS EXPANDED MODAL ================= -->
+<div class="modal fade" id="publicationsModal" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Publications</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <!-- FILTERS -->
+                    <div class="mb-4">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-12 col-md-4">
+                                <select id="modal-filter-vertical" class="form-select"></select>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <select id="modal-filter-type" class="form-select"></select>
+                            </div>
+                            <div class="col-12 col-md-4 text-md-end">
+                                <button id="modal-clear-filters" class="btn btn-outline-secondary w-100 w-md-auto">
+                                    Clear Filters
+                                </button>
+                            </div>
+                        </div>
+                        <div id="modal-vertical-description" class="mt-2 small text-muted" style="display:none"></div>
+                    </div>
+
+                    <!-- PUBLICATIONS GRID -->
+                    <div id="modal-publications-content"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

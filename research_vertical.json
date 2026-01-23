@@ -1,0 +1,17 @@
+[
+  {
+    "id": "all",
+    "name": "All Verticals",
+    "description": ""
+  },
+  {
+    "id": "Wireless Sensing",
+    "name": "Wireless Sensing",
+    "description": "Systems and algorithms for RF-based localization, navigation, and positioning in complex environments using multimodal sensing."
+  },
+  {
+    "id": "Environment Monitoring",
+    "name": "Environment Monitoring",
+    "description": "Resource-constrained intelligent sensing systems using TinyML, adaptive sampling, and fault detection."
+  }
+]

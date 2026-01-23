@@ -1,0 +1,6 @@
+[
+  { "id": "all", "name": "All Types" },
+  { "id": "Conference", "name": "Conference" },
+  { "id": "Workshop", "name": "Workshop" },
+  { "id": "Poster", "name": "Poster" }
+]

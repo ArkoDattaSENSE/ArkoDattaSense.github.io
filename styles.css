@@ -1,233 +1,254 @@
 body {
-    padding-top: 0px;
-    scroll-behavior: smooth;
-    background: #f8f9fa;
-  }
-  
-  /* ================= BANNER ================= */
-  
-  .banner {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  
-  .banner-wrapper {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-  }
-  
-  .banner-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.4);
-    z-index: 1;
-  }
-  
-  .banner-content {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    z-index: 2;
-    transform: translateX(3%);
-  }
-  
-  .profile-pic-banner {
-    max-height: 85%;
-    height: 300px;
-    width: 300px;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 5px solid white;
-    transform: translateX(-40%);
-  }
-  
-  /* ================= CONTENT LAYOUT ================= */
-  
+  padding-top: 0px;
+  scroll-behavior: smooth;
+  background: #f8f9fa;
+}
+
+/* ================= BANNER ================= */
+
+.banner {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.banner-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.4);
+  z-index: 1;
+}
+
+.banner-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  transform: translateX(3%);
+}
+
+.profile-pic-banner {
+  max-height: 85%;
+  height: 300px;
+  width: 300px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid white;
+  transform: translateX(-40%);
+}
+
+/* ================= CONTENT LAYOUT ================= */
+
+.content {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-bottom: 20px;
+}
+
+/* Each row takes equal height minus gap */
+.content-row {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Make sure columns stretch to full height */
+.content-row>[class*="col-"] {
+  height: 100%;
+}
+
+/* ================= SECTION CARD ================= */
+
+.section-card {
+  background: aliceblue;
+  border: 1px solid #d4e7f7;
+  border-radius: 12px;
+  padding: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header NEVER scrolls */
+.section-header {
+  flex-shrink: 0;
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #c0daf5;
+  font-weight: 600;
+}
+
+.section-header small {
+  font-size: 0.75rem;
+  font-weight: normal;
+  color: #666;
+}
+
+/* Body DOES scroll */
+.section-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px;
+  min-height: 0;
+}
+
+/* Custom scrollbar for content areas */
+.section-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.section-body::-webkit-scrollbar-track {
+  background: #e8f4fc;
+  border-radius: 3px;
+}
+
+.section-body::-webkit-scrollbar-thumb {
+  background: #a8d0ec;
+  border-radius: 3px;
+}
+
+.section-body::-webkit-scrollbar-thumb:hover {
+  background: #8fc4e8;
+}
+
+/* ================= PUBLICATIONS ================= */
+
+.pub-card {
+  margin-bottom: 20px;
+}
+
+.pub-card:last-child {
+  margin-bottom: 0;
+}
+
+.pub-card img {
+  cursor: pointer;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ================= NEWS ================= */
+
+.news-box {
+  background: transparent;
+  padding-left: 4px;
+}
+
+#news-content,
+#news-content-mobile {
+  margin: 0;
+  padding-left: 20px;
+}
+
+#news-content li,
+#news-content-mobile li {
+  margin-bottom: 16px;
+}
+
+#news-content li:last-child,
+#news-content-mobile li:last-child {
+  margin-bottom: 0;
+}
+
+/* ================= AWARDS, TEACHING, SERVICE ================= */
+
+#awards-content p,
+#teaching-content p,
+#service-content p {
+  margin-bottom: 50px;
+}
+
+#awards-content p:last-child,
+#teaching-content p:last-child,
+#service-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ================= MOBILE ================= */
+
+.profile-pic {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid white;
+}
+
+.social-icons a {
+  font-size: 1.3rem;
+  margin-right: 14px;
+  text-decoration: none;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
   .content {
-    height: 90vh;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    padding-bottom: 20px;
-  }
-  
-  /* Each row takes equal height minus gap */
-  .content-row {
-    flex: 1;
-    min-height: 0;
-  }
-  
-  /* Make sure columns stretch to full height */
-  .content-row > [class*="col-"] {
-    height: 100%;
-  }
-  
-  /* ================= SECTION CARD ================= */
-  
-  .section-card {
-    background: aliceblue;
-    border: 1px solid #d4e7f7;
-    border-radius: 12px;
-    padding: 16px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Header NEVER scrolls */
-  .section-header {
-    flex-shrink: 0;
-    margin: 0 0 12px 0;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #c0daf5;
-    font-weight: 600;
-  }
-  
-  .section-header small {
-    font-size: 0.75rem;
-    font-weight: normal;
-    color: #666;
-  }
-  
-  /* Body DOES scroll */
-  .section-body {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 6px;
-    min-height: 0;
-  }
-  
-  /* Custom scrollbar for content areas */
-  .section-body::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  .section-body::-webkit-scrollbar-track {
-    background: #e8f4fc;
-    border-radius: 3px;
-  }
-  
-  .section-body::-webkit-scrollbar-thumb {
-    background: #a8d0ec;
-    border-radius: 3px;
-  }
-  
-  .section-body::-webkit-scrollbar-thumb:hover {
-    background: #8fc4e8;
-  }
-  
-  /* ================= PUBLICATIONS ================= */
-  
-  .pub-card {
-    margin-bottom: 20px;
-  }
-  
-  .pub-card:last-child {
-    margin-bottom: 0;
-  }
-  
-  .pub-card img {
-    cursor: pointer;
-    max-width: 100%;
     height: auto;
-    display: block;
+    padding-bottom: 0;
   }
-  
-  /* ================= NEWS ================= */
-  
-  .news-box {
-    background: transparent;
-    padding-left: 4px;
+
+  .content-row {
+    height: auto;
+    flex: none;
   }
-  
-  #news-content,
-  #news-content-mobile {
-    margin: 0;
-    padding-left: 20px;
+
+  .content-row>[class*="col-"] {
+    height: auto;
   }
-  
-  #news-content li,
-  #news-content-mobile li {
+
+  .section-card {
     margin-bottom: 16px;
+    height: auto;
   }
-  
-  #news-content li:last-child,
-  #news-content-mobile li:last-child {
-    margin-bottom: 0;
+
+  .section-body {
+    overflow-y: visible;
+    max-height: none;
   }
-  
-  /* ================= AWARDS, TEACHING, SERVICE ================= */
-  
-  #awards-content p,
-  #teaching-content p,
-  #service-content p {
-    margin-bottom: 50px;
-  }
-  
-  #awards-content p:last-child,
-  #teaching-content p:last-child,
-  #service-content p:last-child {
-    margin-bottom: 0;
-  }
-  
-  /* ================= MOBILE ================= */
-  
-  .profile-pic {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 5px solid white;
-  }
-  
-  .social-icons a {
-    font-size: 1.3rem;
-    margin-right: 14px;
-    text-decoration: none;
-  }
-  
-  /* Mobile responsiveness */
-  @media (max-width: 767px) {
-    .content {
-      height: auto;
-      padding-bottom: 0;
-    }
-    
-    .content-row {
-      height: auto;
-      flex: none;
-    }
-    
-    .content-row > [class*="col-"] {
-      height: auto;
-    }
-    
-    .section-card {
-      margin-bottom: 16px;
-      height: auto;
-    }
-    
-    .section-body {
-      overflow-y: visible;
-      max-height: none;
-    }
-  }
+}
+
 /* ================= FOOTER ================= */
 
 .footer {
-    background: #e8f4fc;
-    margin-top: 50px;
-  }
-  
-  .footer p {
-    margin: 0;
-  }
-  
-  .footer .text-muted {
-    color: #6c757d !important;
-  }
+  background: #e8f4fc;
+  margin-top: 50px;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer .text-muted {
+  color: #6c757d !important;
+}
+
+/* Sticky tabs for mobile */
+@media (max-width: 767.98px) {
+    .nav-tabs {
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        background-color: #f8f9fa;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Ensure tab content scrolls below sticky tabs */
+    .tab-content {
+        position: relative;
+        z-index: 1;
+    }
+}
+
