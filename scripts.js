@@ -772,56 +772,6 @@ function syncMobileFilters() {
   };
 }
 
-window.addEventListener("load", () => {
-  const btn = document.getElementById("pubs-scroll-top");
-  const pubsPane = document.getElementById("pubs");
-  const filters = document.getElementById("filters-mobile-bar");
-  const tabs = document.querySelector(".nav-tabs");
-
-  if (!btn || !pubsPane || !filters || !tabs) return;
-
-  const isFiltersHidden = () => {
-    const filtersRect = filters.getBoundingClientRect();
-    const tabsRect = tabs.getBoundingClientRect();
-
-    // filters completely above the tabs
-    return filtersRect.bottom <= tabsRect.bottom;
-  };
-
-  const updateButtonVisibility = () => {
-    if (
-      pubsPane.classList.contains("active") &&
-      isFiltersHidden()
-    ) {
-      btn.style.display = "flex";
-    } else {
-      btn.style.display = "none";
-    }
-  };
-
-  // Watch scroll
-  window.addEventListener("scroll", updateButtonVisibility, { passive: true });
-
-  // Watch tab switches
-  document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
-    tab.addEventListener("shown.bs.tab", updateButtonVisibility);
-  });
-
-  // Scroll exactly to filters
-  btn.addEventListener("click", () => {
-    const y =
-      window.scrollY +
-      filters.getBoundingClientRect().top -
-      tabs.offsetHeight -
-      8; // small visual gap
-
-    window.scrollTo({ top: y, behavior: "smooth" });
-  });
-
-  // Initial state
-  updateButtonVisibility();
-});
-
 document.addEventListener("DOMContentLoaded", () => {
   document
     .querySelectorAll("#publications-content, #publications-content-mobile")
@@ -862,9 +812,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.appendChild(btn);
 
   function updateIcon() {
-    const isDark = document.body.classList.contains("dark-mode") || 
-                   (!document.body.classList.contains("light-mode") && prefersDark.matches);
-    
+    const isDark = document.body.classList.contains("dark-mode") ||
+      (!document.body.classList.contains("light-mode") && prefersDark.matches);
+
     btn.innerHTML = isDark
       ? '<i class="fa-solid fa-sun"></i>'
       : '<i class="fa-solid fa-moon"></i>';
@@ -873,9 +823,9 @@ document.addEventListener("DOMContentLoaded", () => {
   updateIcon();
 
   btn.addEventListener("click", () => {
-    const isDark = document.body.classList.contains("dark-mode") || 
-                   (!document.body.classList.contains("light-mode") && prefersDark.matches);
-    
+    const isDark = document.body.classList.contains("dark-mode") ||
+      (!document.body.classList.contains("light-mode") && prefersDark.matches);
+
     if (isDark) {
       // Switch to light
       document.body.classList.add("light-mode");
@@ -887,7 +837,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.classList.remove("light-mode");
       localStorage.setItem("theme", "dark");
     }
-    
+
     updateIcon();
   });
 
@@ -898,3 +848,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 })();
+
+window.addEventListener("load", () => {
+  const btn = document.getElementById("pubs-scroll-top");
+  const pubsPane = document.getElementById("pubs");
+  const tabContent = document.querySelector(".tab-content");
+
+  if (!btn || !pubsPane || !tabContent) return;
+
+  let hideTimeout = null;
+
+  const showButton = () => {
+    btn.classList.add("visible");
+    if (hideTimeout) clearTimeout(hideTimeout);
+  };
+
+  const scheduleHide = () => {
+    if (hideTimeout) clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(() => {
+      btn.classList.remove("visible");
+    }, 1500);
+  };
+
+  tabContent.addEventListener("scroll", () => {
+    if (pubsPane.classList.contains("active")) {
+      showButton();
+      scheduleHide();
+    }
+  }, { passive: true });
+
+  document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+    tab.addEventListener("shown.bs.tab", () => {
+      if (!pubsPane.classList.contains("active")) {
+        btn.classList.remove("visible");
+        if (hideTimeout) clearTimeout(hideTimeout);
+      }
+    });
+  });
+
+  btn.addEventListener("click", () => {
+    tabContent.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});

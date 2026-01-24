@@ -242,6 +242,17 @@ body {
     overflow-y: visible;
     max-height: none;
   }
+
+  /* Fixed height for tab content on mobile */
+  .tab-content {
+    height: 75vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .tab-pane {
+    height: 70vh;
+  }
 }
 
 /* ===================================================== */
@@ -351,23 +362,36 @@ select,
 @media (max-width: 767.98px) {
   #pubs-scroll-top {
     position: fixed;
-    bottom: 1rem;
+    bottom: 6rem;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1050;
     border-radius: 50%;
     width: 42px;
     height: 42px;
-    display: none;
+
+    display: flex;
     align-items: center;
     justify-content: center;
+
     box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+  }
+
+  #pubs-scroll-top.visible {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .tab-pane:not(.active) #pubs-scroll-top {
-    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 }
+
 
 /* ===================================================== */
 /* ================= FADE TRANSITIONS ================= */
@@ -758,33 +782,53 @@ body.dark-mode .bg-light {
 #dark-mode-toggle {
   position: fixed;
   bottom: 14px;
-  right: 18px;
-  z-index: 2000;
+
+  /* push half out of screen */
+  right: -18px;
+
   width: 42px;
   height: 42px;
-  border-radius: 50%;
+
+  /* left side rounded, right side flat */
+  border-radius: 50% 0 0 50%;
+
   border: 1px solid #ccc;
   background: #ffffff;
   color: #222;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+  z-index: 2000;
+
+  box-shadow: -4px 0 10px rgba(0,0,0,0.15);
+  padding-right: 20px;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 120ms ease;
 }
 
 body.dark-mode #dark-mode-toggle {
   background: #232838;
   border-color: #4a5268;
   color: #f5f6fa;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  box-shadow: -4px 0 10px rgba(0,0,0,0.4);
 }
 
 #dark-mode-toggle:hover {
-  transform: scale(1.05);
+  transform: translateX(-2px); /* subtle “peek” */
 }
 
 #dark-mode-toggle i {
   font-size: 1rem;
 }
+
+
+a {
+  text-decoration: none !important;
+}
+
