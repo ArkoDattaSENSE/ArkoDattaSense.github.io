@@ -39,24 +39,27 @@ function initYouTubePlayer(iframeId, onReady) {
   const iframe = document.getElementById(iframeId);
   if (!iframe) return null;
 
-  // Ensure the iframe can be clicked immediately
-  iframe.style.pointerEvents = "auto";
-  iframe.style.zIndex = "10";
+  const removeLoader = () => {
+    const container = iframe.parentElement;
+    const loader = container ? container.querySelector('.video-loader') : null;
+    if (loader) {
+      loader.style.transition = "opacity 0.3s ease";
+      loader.style.opacity = "0";
+      setTimeout(() => loader.remove(), 300);
+    }
+  };
 
   return new YT.Player(iframeId, {
     events: {
-      'onReady': onReady,
+      'onReady': (event) => {
+        // Remove loader when player is ready
+        removeLoader();
+        if (onReady) onReady(event);
+      },
       'onStateChange': (event) => {
-        // State 1 = Playing, 3 = Buffering, 0 = Ended
-        // As soon as the player starts any activity, we kill the loader
-        if (event.data === YT.PlayerState.PLAYING ||
-          event.data === YT.PlayerState.BUFFERING ||
-          event.data === YT.PlayerState.CUED) {
-
-          const loader = iframe.parentElement.querySelector('.video-loader');
-          if (loader) {
-            loader.remove(); // This "destroys" the element from the DOM
-          }
+        // Also remove if it starts playing/buffering (backup for mobile)
+        if (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING) {
+          removeLoader();
         }
       }
     }
@@ -128,11 +131,7 @@ function renderVideoEmbed(video, isModal = false) {
   const v = video.trim();
   let id = "";
 
-  if (v.startsWith("<iframe")) {
-    // Extract ID from iframe string if necessary, or just wrap it
-    return `<div class="ratio ratio-16x9 position-relative bg-light">${v}</div>`;
-  }
-
+  // ... (keep your existing ID extraction logic) ...
   try {
     const url = new URL(v);
     if (url.hostname.includes("youtu.be")) {
@@ -145,22 +144,22 @@ function renderVideoEmbed(video, isModal = false) {
   if (id) {
     const iframeId = isModal ? 'modal-youtube-player' : 'main-youtube-player';
     return `
-      <div class="ratio ratio-16x9 position-relative bg-light" style="overflow: hidden;">
-        <div class="video-loader d-flex justify-content-center align-items-center position-absolute w-100 h-100 bg-secondary bg-opacity-25" style="z-index: 2; top:0; left:0;">
-          <div class="spinner-border text-secondary" role="status"></div>
+      <div class="ratio ratio-16x9 position-relative bg-dark" style="overflow: hidden; background: #000;">
+        <div class="video-loader d-flex justify-content-center align-items-center position-absolute w-100 h-100 bg-dark" 
+             style="z-index: 3; top:0; left:0; pointer-events: none;">
+          <div class="spinner-border text-light" role="status"></div>
         </div>
         <iframe
           id="${iframeId}"
-          src="https://www.youtube.com/embed/${id}?enablejsapi=1"
+          src="https://www.youtube.com/embed/${id}?enablejsapi=1&rel=0&autoplay=0"
           frameborder="0"
-          style="position: absolute; z-index: 1; top:0; left:0; width:100%; height:100%;"
+          style="position: absolute; z-index: 3; top:0; left:0; width:100%; height:100%;"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen>
         </iframe>
       </div>
     `;
   }
-
   return "";
 }
 
