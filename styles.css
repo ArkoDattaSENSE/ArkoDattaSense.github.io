@@ -1,10 +1,24 @@
+/* ===================================================== */
+/* ================= GLOBAL RESET ====================== */
+/* ===================================================== */
+
 body {
   padding-top: 0px;
   scroll-behavior: smooth;
   background: #f8f9fa;
+
+  font-family: "Nunito Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100,
+    "YTLC" 500;
 }
 
-/* ================= BANNER ================= */
+/* ===================================================== */
+/* ================= BANNER ============================ */
+/* ===================================================== */
 
 .banner {
   width: 100%;
@@ -45,7 +59,9 @@ body {
   transform: translateX(-40%);
 }
 
-/* ================= CONTENT LAYOUT ================= */
+/* ===================================================== */
+/* ================= CONTENT LAYOUT ==================== */
+/* ===================================================== */
 
 .content {
   height: 90vh;
@@ -55,18 +71,18 @@ body {
   padding-bottom: 20px;
 }
 
-/* Each row takes equal height minus gap */
 .content-row {
   flex: 1;
   min-height: 0;
 }
 
-/* Make sure columns stretch to full height */
-.content-row>[class*="col-"] {
+.content-row > [class*="col-"] {
   height: 100%;
 }
 
-/* ================= SECTION CARD ================= */
+/* ===================================================== */
+/* ================= SECTION CARD ====================== */
+/* ===================================================== */
 
 .section-card {
   background: aliceblue;
@@ -78,22 +94,23 @@ body {
   flex-direction: column;
 }
 
-/* Header NEVER scrolls */
 .section-header {
   flex-shrink: 0;
   margin: 0 0 12px 0;
   padding-bottom: 8px;
   border-bottom: 2px solid #c0daf5;
+
+  font-family: "Nunito Sans", sans-serif;
   font-weight: 600;
+  letter-spacing: 0.2px;
 }
 
 .section-header small {
   font-size: 0.75rem;
-  font-weight: normal;
+  font-weight: 400;
   color: #666;
 }
 
-/* Body DOES scroll */
 .section-body {
   flex: 1;
   overflow-y: auto;
@@ -102,7 +119,7 @@ body {
   min-height: 0;
 }
 
-/* Custom scrollbar for content areas */
+/* Scrollbars */
 .section-body::-webkit-scrollbar {
   width: 6px;
 }
@@ -121,7 +138,9 @@ body {
   background: #8fc4e8;
 }
 
-/* ================= PUBLICATIONS ================= */
+/* ===================================================== */
+/* ================= PUBLICATIONS ====================== */
+/* ===================================================== */
 
 .pub-card {
   margin-bottom: 20px;
@@ -138,7 +157,9 @@ body {
   display: block;
 }
 
-/* ================= NEWS ================= */
+/* ===================================================== */
+/* ================= NEWS ============================== */
+/* ===================================================== */
 
 .news-box {
   background: transparent;
@@ -161,7 +182,9 @@ body {
   margin-bottom: 0;
 }
 
-/* ================= AWARDS, TEACHING, SERVICE ================= */
+/* ===================================================== */
+/* ================= AWARDS / TEACHING / SERVICE ======= */
+/* ===================================================== */
 
 #awards-content p,
 #teaching-content p,
@@ -175,7 +198,9 @@ body {
   margin-bottom: 0;
 }
 
-/* ================= MOBILE ================= */
+/* ===================================================== */
+/* ================= MOBILE ============================ */
+/* ===================================================== */
 
 .profile-pic {
   width: 160px;
@@ -189,6 +214,9 @@ body {
   font-size: 1.3rem;
   margin-right: 14px;
   text-decoration: none;
+
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 500;
 }
 
 /* Mobile responsiveness */
@@ -203,7 +231,7 @@ body {
     flex: none;
   }
 
-  .content-row>[class*="col-"] {
+  .content-row > [class*="col-"] {
     height: auto;
   }
 
@@ -218,7 +246,9 @@ body {
   }
 }
 
-/* ================= FOOTER ================= */
+/* ===================================================== */
+/* ================= FOOTER ============================ */
+/* ===================================================== */
 
 .footer {
   background: #e8f4fc;
@@ -233,7 +263,7 @@ body {
   color: #6c757d !important;
 }
 
-/* Sticky tabs for mobile */
+/* Sticky tabs */
 @media (max-width: 767.98px) {
   .nav-tabs {
     position: sticky;
@@ -245,59 +275,40 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  /* Ensure tab content scrolls below sticky tabs */
   .tab-content {
     position: relative;
     z-index: 1;
   }
 }
 
-@media (max-width: 767.98px) {
-  #filters-mobile .row.g-1 {
-    margin-right: 0;
-    margin-left: 0;
-  }
+/* ===================================================== */
+/* ================= FILTERS =========================== */
+/* ===================================================== */
 
-  /* Ensure the 1-column button is square-ish and visible */
-  #filters-mobile .col-1 {
-    min-width: 35px;
-    /* Ensures the button doesn't disappear on tiny screens */
-  }
-
-  #filters-mobile .btn-sm {
-    height: 31px;
-    /* Matches standard Bootstrap sm-input height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Tighten select padding so text remains visible */
-  .filter-vertical,
-  .filter-type {
-    font-size: 0.75rem;
-    padding-left: 4px;
-    padding-right: 20px;
-    /* Space for the arrow */
-  }
-}
-
-/* Unified Filter Styles for all views */
 .row.g-1.align-items-center .col-11 {
   flex: 0 0 91.666667%;
-  /* Force 11/12 ratio */
   max-width: 91.666667%;
 }
 
 .row.g-1.align-items-center .col-1 {
   flex: 0 0 8.333333%;
-  /* Force 1/12 ratio */
   max-width: 8.333333%;
   min-width: 35px;
-  /* Prevent icon from disappearing */
 }
 
-/* Ensure the selects and button heights align perfectly */
+#filter-vertical,
+#filter-type,
+#clear-filters,
+#modal-filter-vertical,
+#modal-filter-type,
+#modal-clear-filters,
+button,
+select,
+.nav-tabs .nav-link {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 500;
+}
+
 #filter-vertical,
 #filter-type,
 #clear-filters {
@@ -305,31 +316,27 @@ body {
   font-size: 0.85rem;
 }
 
-/* Modal specific sizing (standard size instead of -sm) */
 #modal-filter-vertical,
 #modal-filter-type,
 #modal-clear-filters {
   height: 38px;
 }
 
-/* Keep the undo icon centered */
 .btn i.fa-undo {
   font-size: 0.9rem;
 }
 
-/* ================= MOBILE-ONLY FILTER ADJUSTMENTS ================= */
+/* Mobile-only filter tweaks */
 @media (max-width: 767.98px) {
-  /* Remove arrows from selects in the mobile tab and the mobile version of the page */
-  .filter-vertical, 
+  .filter-vertical,
   .filter-type {
     background-image: none !important;
-    padding-right: 6px !important; /* Reduces unused space on the right */
+    padding-right: 6px !important;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
   }
 
-  /* Optional: if you also want arrows removed when the fullscreen modal is open on mobile */
   #modal-filter-vertical,
   #modal-filter-type {
     background-image: none !important;
@@ -339,55 +346,64 @@ body {
   }
 }
 
+/* ===================================================== */
+/* ================= SCROLL TO TOP ===================== */
+/* ===================================================== */
+
 @media (max-width: 767.98px) {
   #pubs-scroll-top {
     position: fixed;
     bottom: 1rem;
     right: 1rem;
-
     z-index: 1050;
-
     border-radius: 50%;
     width: 42px;
     height: 42px;
-
-    display: none; /* shown via JS */
+    display: none;
     align-items: center;
     justify-content: center;
-
     box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   }
 
-  /* Hide button when Publications tab is inactive */
   .tab-pane:not(.active) #pubs-scroll-top {
     display: none !important;
   }
 }
 
-/* Publications fade transition */
+/* ===================================================== */
+/* ================= FADE TRANSITIONS ================= */
+/* ===================================================== */
+
 #publications-content,
 #publications-content-mobile {
   transition: opacity 180ms ease;
 }
 
-.pub-fade-out {
-  opacity: 0;
-}
+.pub-fade-out { opacity: 0; }
+.pub-fade-in  { opacity: 1; }
 
-.pub-fade-in {
-  opacity: 1;
-}
-
-/* Vertical description fade */
 #vertical-description,
 .vertical-description {
   transition: opacity 180ms ease;
 }
 
-.desc-fade-out {
-  opacity: 0;
+.desc-fade-out { opacity: 0; }
+.desc-fade-in  { opacity: 1; }
+
+/* ===================================================== */
+/* ================= SPECIAL TYPOGRAPHY ================ */
+/* ===================================================== */
+
+/* Name ONLY */
+.banner-content h2,
+.container.d-md-none h2 {
+  font-family: "Poiret One", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.6px;
 }
 
-.desc-fade-in {
-  opacity: 1;
+/* Modal titles */
+.modal-title {
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
 }
