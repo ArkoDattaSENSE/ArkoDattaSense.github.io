@@ -245,7 +245,7 @@ body {
 
   /* Fixed height for tab content on mobile */
   .tab-content {
-    height: 75vh;
+    height: 70vh;
     overflow-y: scroll;
     overflow-x: hidden;
   }
