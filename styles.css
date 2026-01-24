@@ -7,14 +7,12 @@ body {
   scroll-behavior: smooth;
   background: #f8f9fa;
 
-  font-family: "Nunito Sans", sans-serif;
+  font-family: "Outfit", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  font-variation-settings:
-    "wdth" 100,
-    "YTLC" 500;
 }
+
 
 /* ===================================================== */
 /* ================= BANNER ============================ */
@@ -389,21 +387,3 @@ select,
 
 .desc-fade-out { opacity: 0; }
 .desc-fade-in  { opacity: 1; }
-
-/* ===================================================== */
-/* ================= SPECIAL TYPOGRAPHY ================ */
-/* ===================================================== */
-
-/* Name ONLY */
-.banner-content h2,
-.container.d-md-none h2 {
-  font-family: "Poiret One", sans-serif;
-  font-weight: 400;
-  letter-spacing: 0.6px;
-}
-
-/* Modal titles */
-.modal-title {
-  font-family: "Outfit", sans-serif;
-  font-weight: 600;
-}
