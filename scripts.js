@@ -455,9 +455,32 @@ function syncAllFilters() {
 /* ========================================================= */
 
 function updateVerticalDescription() {
-  renderVerticalBlock(document.getElementById("vertical-description"), false);
-  renderVerticalBlock(document.querySelector(".vertical-description"), true);
+  const desktopDesc = document.getElementById("vertical-description");
+  const mobileDesc = document.querySelector(".vertical-description");
+
+  const targets = [desktopDesc, mobileDesc].filter(Boolean);
+
+  // Fade out
+  targets.forEach(el => {
+    el.classList.remove("desc-fade-in");
+    el.classList.add("desc-fade-out");
+  });
+
+  setTimeout(() => {
+    // Update content AFTER fade-out
+    renderVerticalBlock(desktopDesc, false);
+    renderVerticalBlock(mobileDesc, true);
+
+    // Fade back in (only if visible)
+    targets.forEach(el => {
+      if (el.style.display !== "none") {
+        el.classList.remove("desc-fade-out");
+        el.classList.add("desc-fade-in");
+      }
+    });
+  }, 180); // MUST match CSS
 }
+
 
 function renderVerticalBlock(container, isMobile) {
   if (!container) return;
@@ -633,14 +656,33 @@ function renderFilteredPublications() {
     (ACTIVE_TYPE === "all" || p.publication_type === ACTIVE_TYPE)
   );
 
-  const html = createPublicationsGrid(pubs);
-  c.innerHTML = html;
-  if (m) m.innerHTML = html;
+  const targets = [c, m].filter(Boolean);
 
-  syncMobileFilters();
-  enablePublicationClicks();
-  setTimeout(updateStickyFilterPosition, 100);
+  // Fade out
+  targets.forEach(el => {
+    el.classList.remove("pub-fade-in");
+    el.classList.add("pub-fade-out");
+  });
+
+  // After fade-out, swap content
+  setTimeout(() => {
+    const html = createPublicationsGrid(pubs);
+
+    c.innerHTML = html;
+    if (m) m.innerHTML = html;
+
+    enablePublicationClicks();
+    syncMobileFilters();
+    setTimeout(updateStickyFilterPosition, 50);
+
+    // Fade back in
+    targets.forEach(el => {
+      el.classList.remove("pub-fade-out");
+      el.classList.add("pub-fade-in");
+    });
+  }, 180); // MUST match CSS duration
 }
+
 
 function renderModalPublications() {
   const c = document.getElementById("modal-publications-content");
@@ -729,3 +771,67 @@ function syncMobileFilters() {
     renderFilteredPublications();
   };
 }
+
+window.addEventListener("load", () => {
+  const btn = document.getElementById("pubs-scroll-top");
+  const pubsPane = document.getElementById("pubs");
+  const filters = document.getElementById("filters-mobile-bar");
+  const tabs = document.querySelector(".nav-tabs");
+
+  if (!btn || !pubsPane || !filters || !tabs) return;
+
+  const isFiltersHidden = () => {
+    const filtersRect = filters.getBoundingClientRect();
+    const tabsRect = tabs.getBoundingClientRect();
+
+    // filters completely above the tabs
+    return filtersRect.bottom <= tabsRect.bottom;
+  };
+
+  const updateButtonVisibility = () => {
+    if (
+      pubsPane.classList.contains("active") &&
+      isFiltersHidden()
+    ) {
+      btn.style.display = "flex";
+    } else {
+      btn.style.display = "none";
+    }
+  };
+
+  // Watch scroll
+  window.addEventListener("scroll", updateButtonVisibility, { passive: true });
+
+  // Watch tab switches
+  document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+    tab.addEventListener("shown.bs.tab", updateButtonVisibility);
+  });
+
+  // Scroll exactly to filters
+  btn.addEventListener("click", () => {
+    const y =
+      window.scrollY +
+      filters.getBoundingClientRect().top -
+      tabs.offsetHeight -
+      8; // small visual gap
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+  });
+
+  // Initial state
+  updateButtonVisibility();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  document
+    .querySelectorAll("#publications-content, #publications-content-mobile")
+    .forEach(el => el.classList.add("pub-fade-in"));
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  document
+    .querySelectorAll(
+      "#vertical-description, .vertical-description"
+    )
+    .forEach(el => el.classList.add("desc-fade-in"));
+});

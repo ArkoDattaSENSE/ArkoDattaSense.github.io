@@ -316,3 +316,78 @@ body {
 .btn i.fa-undo {
   font-size: 0.9rem;
 }
+
+/* ================= MOBILE-ONLY FILTER ADJUSTMENTS ================= */
+@media (max-width: 767.98px) {
+  /* Remove arrows from selects in the mobile tab and the mobile version of the page */
+  .filter-vertical, 
+  .filter-type {
+    background-image: none !important;
+    padding-right: 6px !important; /* Reduces unused space on the right */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  /* Optional: if you also want arrows removed when the fullscreen modal is open on mobile */
+  #modal-filter-vertical,
+  #modal-filter-type {
+    background-image: none !important;
+    padding-right: 6px !important;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  #pubs-scroll-top {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+
+    z-index: 1050;
+
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+
+    display: none; /* shown via JS */
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  }
+
+  /* Hide button when Publications tab is inactive */
+  .tab-pane:not(.active) #pubs-scroll-top {
+    display: none !important;
+  }
+}
+
+/* Publications fade transition */
+#publications-content,
+#publications-content-mobile {
+  transition: opacity 180ms ease;
+}
+
+.pub-fade-out {
+  opacity: 0;
+}
+
+.pub-fade-in {
+  opacity: 1;
+}
+
+/* Vertical description fade */
+#vertical-description,
+.vertical-description {
+  transition: opacity 180ms ease;
+}
+
+.desc-fade-out {
+  opacity: 0;
+}
+
+.desc-fade-in {
+  opacity: 1;
+}

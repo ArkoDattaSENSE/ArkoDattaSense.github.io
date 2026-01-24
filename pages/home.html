@@ -187,39 +187,46 @@
         <div class="tab-pane fade show active" id="pubs">
 
             <!-- MOBILE FILTERS -->
-            <div class="mb-3" id="filters-mobile">
-                <div class="row g-1 align-items-center">
-                    <div class="col-11>
-                        <div class="row g-1">
-                            <div class="col-6">
-                                <select class="form-select form-select-sm filter-vertical"></select>
-                            </div>
-                            <div class="col-5">
-                                <select class="form-select form-select-sm filter-type"></select>
+            <div id="filters-mobile">
+                <!-- STICKY PART -->
+                <div id="filters-mobile-bar">
+                    <div class="row g-1 align-items-center">
+                        <div class="col-10">
+                            <div class="row g-1">
+                                <div class="col-5">
+                                    <select class="form-select form-select-sm filter-vertical"></select>
+                                </div>
+                                <div class="col-5">
+                                    <select class="form-select form-select-sm filter-type"></select>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="col-1 px-0">
-                        <button
-                            class="btn btn-sm btn-outline-secondary w-100 clear-filters d-flex justify-content-center align-items-center"
-                            title="Clear Filters" style="padding: 5px 0;">
-                            <i class="fa-solid fa-undo"></i>
-                        </button>
+                        <div class="col-1 px-0">
+                            <button
+                                class="btn btn-sm btn-outline-secondary w-100 clear-filters d-flex justify-content-center align-items-center"
+                                title="Clear Filters">
+                                <i class="fa-solid fa-undo"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
+                <!-- NON-STICKY PART -->
                 <div class="mt-2 small text-muted vertical-description" style="display:none"></div>
             </div>
+
             <div class="d-md-none mb-2 text-muted">
                 <small>
                     <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
-                    Press on the thumbnail of each paper to know more.<br>
-                    <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
-                    You can filter the papers by pressing on the tags as well
+                    Press on the thumbnail of each paper to know more. You can filter the papers by pressing on the tags
+                    as well
                 </small>
             </div>
             <div id="publications-content-mobile"></div>
+            <button id="pubs-scroll-top" class="btn btn-secondary btn-sm" aria-label="Scroll to top">
+                <i class="fa-solid fa-chevron-up"></i>
+            </button>
         </div>
 
         <div class="tab-pane fade" id="news">
