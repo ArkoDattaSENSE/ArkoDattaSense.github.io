@@ -1,17 +1,20 @@
 [
   {
     "id": "all",
-    "name": "All Verticals",
-    "description": ""
+    "name": "All Research Areas",
+    "description": "You can filter by each research area to know more about my contribution in each, along with the relevant papers.",
+    "video":""
   },
   {
     "id": "Wireless Sensing",
     "name": "Wireless Sensing",
-    "description": "Systems and algorithms for RF-based localization, navigation, and positioning in complex environments using multimodal sensing."
+    "description": "Systems and algorithms for RF-based localization, navigation, and positioning in complex environments using multimodal sensing.",
+    "video":""
   },
   {
     "id": "Environment Monitoring",
     "name": "Environment Monitoring",
-    "description": "Resource-constrained intelligent sensing systems using TinyML, adaptive sampling, and fault detection."
+    "description": "Resource-constrained intelligent sensing systems using TinyML, adaptive sampling, and fault detection.",
+    "video":"https://www.youtube.com/watch?v=fYDe7aLHTiQ"
   }
 ]

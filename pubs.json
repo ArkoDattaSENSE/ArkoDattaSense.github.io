@@ -9,7 +9,8 @@
       "pdf": "assets/argos_paper.pdf",
       "website": "https://vizloc.github.io/demo-vis/",
       "research_vertical": "Wireless Sensing",
-      "publication_type": "Conference"
+      "publication_type": "Conference",
+      "video":"https://www.youtube.com/watch?v=NNSm4e_TFxA"
     },
     {
         "order": 2,
@@ -21,7 +22,8 @@
         "pdf": "",
         "website": "",
         "research_vertical": "Wireless Sensing",
-        "publication_type": "Poster"
+        "publication_type": "Poster",
+        "video":""
       },
       {
         "order": 3,
@@ -33,7 +35,8 @@
         "pdf": "",
         "website": "",
         "research_vertical": "Environment Monitoring",
-        "publication_type": "Workshop"
+        "publication_type": "Workshop",
+        "video":""
       },
       {
         "order": 4,
@@ -45,7 +48,8 @@
         "pdf": "assets/pollusensecheck_paper.pdf",
         "website": "https://www.youtube.com/watch?v=PRj5PkJxbcM",
         "research_vertical": "Environment Monitoring",
-        "publication_type": "Conference"
+        "publication_type": "Conference",
+        "video":"https://www.youtube.com/watch?v=PRj5PkJxbcM"
       },
       {
         "order": 5,
@@ -57,7 +61,8 @@
         "pdf": "assets/icdcn_workshop_paper.pdf",
         "website": "https://youtu.be/hkRU-BqhsAE?si=gcEj9UY8biKOdfub",
         "research_vertical": "Environment Monitoring",
-        "publication_type": "Workshop"
+        "publication_type": "Workshop",
+        "video":"https://youtu.be/hkRU-BqhsAE?si=gcEj9UY8biKOdfub"
       },
       {
         "order": 6,
@@ -69,7 +74,8 @@
         "pdf": "assets/icdcn_poster_paper.pdf",
         "website": "",
         "research_vertical": "Environment Monitoring",
-        "publication_type": "Poster"
+        "publication_type": "Poster",
+        "video":"https://youtu.be/hkRU-BqhsAE?si=gcEj9UY8biKOdfub"
       }
   ]
   

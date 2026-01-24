@@ -1,10 +1,75 @@
 let ACTIVE_VERTICAL = "all";
 let ACTIVE_TYPE = "all";
+
 let VERTICAL_META = {};
+let VERTICAL_VIDEO = {};
 let VERTICAL_NAMES = {};
 let TYPE_NAMES = {};
 
+// YouTube Player API tracking
+let mainPlayer = null;
+let modalPlayer = null;
+let currentTimestamp = 0;
+let wasPlayingMain = false;
+let wasPlayingModal = false;
+
+/* ========================================================= */
+/* =================== YOUTUBE API SETUP =================== */
+/* ========================================================= */
+
+// Load YouTube IFrame API
+function loadYouTubeAPI() {
+  if (window.YT) return;
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  const firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+// Called automatically by YouTube API when ready
+window.onYouTubeIframeAPIReady = function () {
+};
+
+function initYouTubePlayer(iframeId, onReady) {
+  if (!window.YT || !window.YT.Player) {
+    setTimeout(() => initYouTubePlayer(iframeId, onReady), 100);
+    return;
+  }
+
+  const iframe = document.getElementById(iframeId);
+  if (!iframe) return null;
+
+  // Ensure the iframe can be clicked immediately
+  iframe.style.pointerEvents = "auto";
+  iframe.style.zIndex = "10";
+
+  return new YT.Player(iframeId, {
+    events: {
+      'onReady': onReady,
+      'onStateChange': (event) => {
+        // State 1 = Playing, 3 = Buffering, 0 = Ended
+        // As soon as the player starts any activity, we kill the loader
+        if (event.data === YT.PlayerState.PLAYING ||
+          event.data === YT.PlayerState.BUFFERING ||
+          event.data === YT.PlayerState.CUED) {
+
+          const loader = iframe.parentElement.querySelector('.video-loader');
+          if (loader) {
+            loader.remove(); // This "destroys" the element from the DOM
+          }
+        }
+      }
+    }
+  });
+}
+
+/* ========================================================= */
+/* ====================== BOOTSTRAP ======================== */
+/* ========================================================= */
+
 document.addEventListener("DOMContentLoaded", () => {
+  loadYouTubeAPI();
+
   fetch("pages.json")
     .then(r => r.json())
     .then(pages => {
@@ -28,18 +93,15 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-  // Update sticky filter position on resize
   updateStickyFilterPosition();
   window.addEventListener("resize", updateStickyFilterPosition);
 });
 
 function updateStickyFilterPosition() {
   const tabs = document.querySelector(".nav-tabs");
-  const filtersPanel = document.getElementById("filters-mobile");
-  
-  if (tabs && filtersPanel && window.innerWidth < 768) {
-    const tabsHeight = tabs.offsetHeight;
-    filtersPanel.style.top = `${tabsHeight}px`;
+  const filters = document.getElementById("filters-mobile");
+  if (tabs && filters && window.innerWidth < 768) {
+    filters.style.top = `${tabs.offsetHeight}px`;
   }
 }
 
@@ -48,7 +110,6 @@ function loadPage(page) {
     .then(r => r.text())
     .then(html => {
       document.getElementById("content").innerHTML = html;
-
       loadPublications();
       loadNews();
       loadSimpleList("awards.json", "awards-content", "awards");
@@ -57,7 +118,101 @@ function loadPage(page) {
     });
 }
 
-/* ---------------- PUBLICATIONS ---------------- */
+/* ========================================================= */
+/* ================= VIDEO NORMALIZATION =================== */
+/* ========================================================= */
+
+function renderVideoEmbed(video, isModal = false) {
+  if (!video || !video.trim()) return "";
+
+  const v = video.trim();
+  let id = "";
+
+  if (v.startsWith("<iframe")) {
+    // Extract ID from iframe string if necessary, or just wrap it
+    return `<div class="ratio ratio-16x9 position-relative bg-light">${v}</div>`;
+  }
+
+  try {
+    const url = new URL(v);
+    if (url.hostname.includes("youtu.be")) {
+      id = url.pathname.slice(1);
+    } else if (url.searchParams.get("v")) {
+      id = url.searchParams.get("v");
+    }
+  } catch (_) { }
+
+  if (id) {
+    const iframeId = isModal ? 'modal-youtube-player' : 'main-youtube-player';
+    return `
+      <div class="ratio ratio-16x9 position-relative bg-light" style="overflow: hidden;">
+        <div class="video-loader d-flex justify-content-center align-items-center position-absolute w-100 h-100 bg-secondary bg-opacity-25" style="z-index: 2; top:0; left:0;">
+          <div class="spinner-border text-secondary" role="status"></div>
+        </div>
+        <iframe
+          id="${iframeId}"
+          src="https://www.youtube.com/embed/${id}?enablejsapi=1"
+          frameborder="0"
+          style="position: absolute; z-index: 1; top:0; left:0; width:100%; height:100%;"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    `;
+  }
+
+  return "";
+}
+
+
+function renderPublicationVideo(pub) {
+  if (!pub.video || !pub.video.trim()) return "";
+
+  let videoId = "";
+
+  try {
+    const url = new URL(pub.video.trim());
+    if (url.hostname.includes("youtu.be")) {
+      videoId = url.pathname.slice(1);
+    } else if (url.searchParams.get("v")) {
+      videoId = url.searchParams.get("v");
+    }
+  } catch (_) { }
+
+  if (!videoId) return "";
+
+  const thumb = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
+  return `
+    <div class="ratio ratio-16x9 position-relative mb-3" style="overflow:hidden">
+      
+      <!-- Thumbnail placeholder -->
+      <img
+        src="${thumb}"
+        class="position-absolute w-100 h-100"
+        style="object-fit:cover; z-index:2"
+        data-role="pub-video-placeholder"
+      />
+
+      <!-- Iframe -->
+      <iframe
+        src="https://www.youtube.com/embed/${videoId}"
+        class="position-absolute w-100 h-100"
+        style="border:0; z-index:1"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        onload="
+          const img=this.parentElement.querySelector('[data-role=pub-video-placeholder]');
+          if(img) img.remove();
+        "
+      ></iframe>
+    </div>
+  `;
+}
+
+/* ========================================================= */
+/* ===================== PUBLICATIONS ====================== */
+/* ========================================================= */
 
 function loadPublications() {
   fetch("pubs.json")
@@ -65,7 +220,6 @@ function loadPublications() {
     .then(pubs => {
       pubs.sort((a, b) => a.order - b.order);
       window.__PUBS__ = pubs;
-      
       loadFilters();
     });
 }
@@ -73,41 +227,30 @@ function loadPublications() {
 function enablePublicationClicks() {
   document.querySelectorAll('[data-role="pub-grid"]').forEach(grid => {
     grid.onclick = e => {
-      // Handle thumbnail clicks
       const img = e.target.closest(".pub-thumb");
       if (img) {
-        const idx = img.dataset.pubIndex;
-        openModal(window.__PUBS__[idx]);
+        openModal(window.__PUBS__[img.dataset.pubIndex]);
         return;
       }
 
-      // Handle filter badge clicks
       const badge = e.target.closest(".filter-badge");
       if (badge) {
         e.stopPropagation();
-        const filterType = badge.dataset.filterType;
-        const filterValue = badge.dataset.filterValue;
-        
-        if (filterType === "vertical") {
-          ACTIVE_VERTICAL = filterValue;
-        } else if (filterType === "type") {
-          ACTIVE_TYPE = filterValue;
+
+        if (badge.dataset.filterType === "vertical") {
+          ACTIVE_VERTICAL = badge.dataset.filterValue;
+        } else {
+          ACTIVE_TYPE = badge.dataset.filterValue;
         }
-        
-        // 1. Update all dropdown selections (Main, Mobile, and Modal)
+
         updateAllFilters();
-        
-        // 2. Update descriptions (Main and Mobile)
         updateVerticalDescription();
-        
-        // 3. Re-render the main page background
         renderFilteredPublications();
 
-        // 4. CRITICAL: Re-render the modal content if it's open
-        const modalElement = document.getElementById("publicationsModal");
-        const isModalOpen = modalElement && modalElement.classList.contains('show');
-        if (isModalOpen) {
-            renderModalPublications();
+        const modal = document.getElementById("publicationsModal");
+        if (modal && modal.classList.contains("show")) {
+          renderModalPublications();
+          updateModalVerticalDescription();
         }
       }
     };
@@ -115,124 +258,117 @@ function enablePublicationClicks() {
 }
 
 function updateAllFilters() {
-  // Update desktop filters
-  const dVert = document.getElementById("filter-vertical");
-  const dType = document.getElementById("filter-type");
-  if (dVert) dVert.value = ACTIVE_VERTICAL;
-  if (dType) dType.value = ACTIVE_TYPE;
+  ["filter-vertical", "modal-filter-vertical"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = ACTIVE_VERTICAL;
+  });
 
-  // Update mobile filters
-  const mVert = document.querySelector(".filter-vertical");
-  const mType = document.querySelector(".filter-type");
-  if (mVert) mVert.value = ACTIVE_VERTICAL;
-  if (mType) mType.value = ACTIVE_TYPE;
+  ["filter-type", "modal-filter-type"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = ACTIVE_TYPE;
+  });
 
-  // Update modal filters
-  const modalVert = document.getElementById("modal-filter-vertical");
-  const modalType = document.getElementById("modal-filter-type");
-  if (modalVert) modalVert.value = ACTIVE_VERTICAL;
-  if (modalType) modalType.value = ACTIVE_TYPE;
+  const mv = document.querySelector(".filter-vertical");
+  const mt = document.querySelector(".filter-type");
+  if (mv) mv.value = ACTIVE_VERTICAL;
+  if (mt) mt.value = ACTIVE_TYPE;
 
-  // Update modal vertical description
   updateModalVerticalDescription();
 }
 
 function openModal(pub) {
+  // 1. Define the element FIRST
+  const modalEl = document.getElementById("pubModal");
+
+  // 2. Now you can use it
   document.getElementById("modalTitle").innerHTML = pub.title;
   document.getElementById("modalAuthors").innerHTML = pub.authors;
   document.getElementById("modalVenue").innerHTML = pub.venue;
-  document.getElementById("modalAbstract").innerHTML = pub.abstract;
+  document.getElementById("modalAbstract").innerHTML = renderPublicationVideo(pub) + pub.abstract;
+
+  // PATCH: Clear abstract (and stop video) when closed
+  modalEl.addEventListener('hidden.bs.modal', () => {
+    document.getElementById("modalAbstract").innerHTML = "";
+  }, { once: true });
 
   const actions = document.getElementById("modalActions");
   actions.innerHTML = "";
+  if (pub.pdf) actions.innerHTML += `<a href="${pub.pdf}" class="btn btn-primary">PDF</a>`;
+  if (pub.website) actions.innerHTML += `<a href="${pub.website}" class="btn btn-outline-secondary">Website</a>`;
 
-  if (pub.pdf) {
-    actions.innerHTML += `<a href="${pub.pdf}" class="btn btn-primary">PDF</a>`;
-  }
-  if (pub.website) {
-    actions.innerHTML += `<a href="${pub.website}" class="btn btn-outline-secondary">Website</a>`;
-  }
+  const modal = new bootstrap.Modal(modalEl);
+  modalEl.style.zIndex = 1060;
 
-  const pubModal = document.getElementById("pubModal");
-  const modal = new bootstrap.Modal(pubModal);
-  
-  // Ensure proper z-index stacking
-  pubModal.style.zIndex = "1060";
-  
-  // Handle backdrop z-index after modal is shown
-  pubModal.addEventListener('shown.bs.modal', function adjustBackdrop() {
-    const backdrops = document.querySelectorAll('.modal-backdrop');
-    if (backdrops.length > 0) {
-      const lastBackdrop = backdrops[backdrops.length - 1];
-      lastBackdrop.style.zIndex = "1055";
+  modalEl.addEventListener("shown.bs.modal", function fixBackdrop() {
+    const backdrops = document.querySelectorAll(".modal-backdrop");
+    if (backdrops.length) {
+      backdrops[backdrops.length - 1].style.zIndex = 1055;
     }
-    pubModal.removeEventListener('shown.bs.modal', adjustBackdrop);
+    modalEl.removeEventListener("shown.bs.modal", fixBackdrop);
   });
-  
+
   modal.show();
 }
 
-/* ---------------- NEWS ---------------- */
+
+/* ========================================================= */
+/* ======================== NEWS =========================== */
+/* ========================================================= */
 
 function loadNews() {
   fetch("news.json")
     .then(r => r.json())
     .then(news => {
       news.sort((a, b) => a.order - b.order);
+      const d = document.getElementById("news-content");
+      const m = document.getElementById("news-content-mobile");
+      if (!d) return;
 
-      const desktop = document.getElementById("news-content");
-      const mobile = document.getElementById("news-content-mobile");
-      if (!desktop) return;
-
-      desktop.innerHTML = "";
+      d.innerHTML = "";
       news.forEach(n => {
         const li = document.createElement("li");
         li.innerHTML = `${n.date}: ${n.text}`;
-        desktop.appendChild(li);
+        d.appendChild(li);
       });
-
-      if (mobile) {
-        mobile.innerHTML = desktop.innerHTML;
-      }
+      if (m) m.innerHTML = d.innerHTML;
     });
 }
 
-/* ---------------- GENERIC LIST (Awards / Teaching / Service) ---------------- */
+/* ========================================================= */
+/* ===================== SIMPLE LIST ======================= */
+/* ========================================================= */
 
 function loadSimpleList(jsonFile, desktopId, mobileId) {
   fetch(jsonFile)
     .then(r => r.json())
     .then(items => {
       items.sort((a, b) => a.order - b.order);
-
-      const desktop = document.getElementById(desktopId);
-      const mobile = document.getElementById(mobileId);
-      if (!desktop) return;
+      const d = document.getElementById(desktopId);
+      const m = document.getElementById(mobileId);
+      if (!d) return;
 
       const ul = document.createElement("ul");
-      ul.className = "list";
-
       items.forEach(it => {
         const li = document.createElement("li");
         li.innerHTML = it.text + "<br><br>";
         ul.appendChild(li);
       });
 
-      desktop.innerHTML = "";
-      desktop.appendChild(ul);
-
-      if (mobile) {
-        mobile.innerHTML = ul.outerHTML;
-      }
+      d.innerHTML = "";
+      d.appendChild(ul);
+      if (m) m.innerHTML = ul.outerHTML;
     });
 }
+
+/* ========================================================= */
+/* ======================== FILTERS ======================== */
+/* ========================================================= */
 
 function loadFilters() {
   Promise.all([
     fetch("research_vertical.json").then(r => r.json()),
     fetch("publication_type.json").then(r => r.json())
   ]).then(([verticals, types]) => {
-
     const vSel = document.getElementById("filter-vertical");
     const tSel = document.getElementById("filter-type");
     if (!vSel || !tSel) return;
@@ -242,6 +378,7 @@ function loadFilters() {
 
     verticals.forEach(v => {
       VERTICAL_META[v.id] = v.description || "";
+      VERTICAL_VIDEO[v.id] = v.video || "";
       VERTICAL_NAMES[v.id] = v.name;
       vSel.innerHTML += `<option value="${v.id}">${v.name}</option>`;
     });
@@ -253,284 +390,343 @@ function loadFilters() {
 
     vSel.onchange = () => {
       ACTIVE_VERTICAL = vSel.value;
+      syncAllFilters();
       updateVerticalDescription();
       renderFilteredPublications();
     };
 
     tSel.onchange = () => {
       ACTIVE_TYPE = tSel.value;
+      syncAllFilters();
       renderFilteredPublications();
     };
 
-    document.getElementById("clear-filters").onclick = () => {
-      ACTIVE_VERTICAL = "all";
-      ACTIVE_TYPE = "all";
-      vSel.value = "all";
-      tSel.value = "all";
-      updateVerticalDescription();
-      renderFilteredPublications();
-    };
-
-    // Setup expand button
-    const expandBtn = document.getElementById("expand-publications");
-    if (expandBtn) {
-      expandBtn.onclick = openPublicationsModal;
+    document.getElementById("clear-filters").onclick = clearAllFilters;
+    
+    // Mobile clear button uses a class, not ID
+    const clearMobile = document.querySelector(".clear-filters");
+    if (clearMobile) {
+      clearMobile.onclick = clearAllFilters;
     }
 
-    // Initial render after filters are loaded
+    document.getElementById("expand-publications")
+      ?.addEventListener("click", openPublicationsModal);
+
+    updateVerticalDescription();
     renderFilteredPublications();
   });
 }
 
-function getVerticalName(verticalId) {
-  return VERTICAL_NAMES[verticalId] || verticalId;
+function clearAllFilters() {
+  ACTIVE_VERTICAL = "all";
+  ACTIVE_TYPE = "all";
+  syncAllFilters();
+  updateVerticalDescription();
+  renderFilteredPublications();
+  
+  const modal = document.getElementById("publicationsModal");
+  if (modal && modal.classList.contains("show")) {
+    updateModalVerticalDescription();
+    renderModalPublications();
+  }
 }
 
-function getTypeName(typeId) {
-  return TYPE_NAMES[typeId] || typeId;
+function syncAllFilters() {
+  // Desktop filters
+  const dv = document.getElementById("filter-vertical");
+  const dt = document.getElementById("filter-type");
+  if (dv) dv.value = ACTIVE_VERTICAL;
+  if (dt) dt.value = ACTIVE_TYPE;
+
+  // Mobile filters (main page)
+  const mv = document.querySelector(".filter-vertical");
+  const mt = document.querySelector(".filter-type");
+  if (mv) mv.value = ACTIVE_VERTICAL;
+  if (mt) mt.value = ACTIVE_TYPE;
+
+  // Modal filters
+  const modalV = document.getElementById("modal-filter-vertical");
+  const modalT = document.getElementById("modal-filter-type");
+  if (modalV) modalV.value = ACTIVE_VERTICAL;
+  if (modalT) modalT.value = ACTIVE_TYPE;
 }
+
+/* ========================================================= */
+/* =============== VERTICAL DESCRIPTION ==================== */
+/* ========================================================= */
+
+function updateVerticalDescription() {
+  renderVerticalBlock(document.getElementById("vertical-description"), false);
+  renderVerticalBlock(document.querySelector(".vertical-description"), true);
+}
+
+function renderVerticalBlock(container, isMobile) {
+  if (!container) return;
+
+  const title = VERTICAL_NAMES[ACTIVE_VERTICAL];
+  const desc = VERTICAL_META[ACTIVE_VERTICAL];
+  const video = VERTICAL_VIDEO[ACTIVE_VERTICAL];
+
+  // Show description for "all" without title
+  if (ACTIVE_VERTICAL === "all") {
+    if (desc) {
+      container.style.display = "block";
+      container.innerHTML = `<p>${desc}</p>`;
+    } else {
+      container.style.display = "none";
+      container.innerHTML = "";
+    }
+    mainPlayer = null;
+    return;
+  }
+
+  let html = "";
+
+  if (!video) {
+    html = `
+      <div class="col-12">
+        <h5 class="mb-2">${title}</h5>
+        <p>${desc}</p>
+      </div>
+    `;
+  } else if (isMobile) {
+    html = `
+      <h5 class="mb-2">${title}</h5>
+      <p>${desc}</p>
+      ${renderVideoEmbed(video, false)}
+    `;
+  } else {
+    html = `
+      <div class="row g-3 align-items-start">
+        <div class="col-md-8">
+          <h5 class="mb-2">${title}</h5>
+          <p>${desc}</p>
+        </div>
+        <div class="col-md-4">
+          ${renderVideoEmbed(video, false)}
+        </div>
+      </div>
+    `;
+  }
+
+  container.style.display = "block";
+  container.innerHTML = html;
+
+  if (video) {
+    setTimeout(() => {
+      mainPlayer = initYouTubePlayer('main-youtube-player', function (event) {
+        console.log('Main player ready');
+      });
+    }, 100);
+  }
+}
+
+/* ========================================================= */
+/* ========================= MODAL ========================= */
+/* ========================================================= */
 
 function openPublicationsModal() {
-  const modal = new bootstrap.Modal(document.getElementById("publicationsModal"));
-  
-  // Sync modal filters with main filters
+  // 1. IMMEDIATELY stop the main background video
+  if (mainPlayer && mainPlayer.pauseVideo) {
+    mainPlayer.pauseVideo();
+  }
+
   syncModalFilters();
-  
-  // Render publications in modal
+  updateModalVerticalDescription();
   renderModalPublications();
-  
+
+  const modalEl = document.getElementById("publicationsModal");
+  const modal = new bootstrap.Modal(modalEl);
+
+  // 2. Ensure the modal's own video stops when the modal is closed
+  modalEl.addEventListener('hidden.bs.modal', onModalClose, { once: true });
+
   modal.show();
 }
 
+function onModalClose() {
+  // Stop the modal video so it doesn't leak audio into the main page
+  if (modalPlayer && modalPlayer.pauseVideo) {
+    modalPlayer.pauseVideo();
+  }
+}
+
 function syncModalFilters() {
-  const mainVert = document.getElementById("filter-vertical");
-  const mainType = document.getElementById("filter-type");
-  const modalVert = document.getElementById("modal-filter-vertical");
-  const modalType = document.getElementById("modal-filter-type");
+  const mv = document.getElementById("modal-filter-vertical");
+  const mt = document.getElementById("modal-filter-type");
+  const dv = document.getElementById("filter-vertical");
+  const dt = document.getElementById("filter-type");
 
-  if (!mainVert || !modalVert) return;
+  if (!mv || !mt) return;
 
-  // Copy options
-  modalVert.innerHTML = mainVert.innerHTML;
-  modalType.innerHTML = mainType.innerHTML;
+  mv.innerHTML = dv.innerHTML;
+  mt.innerHTML = dt.innerHTML;
+  mv.value = ACTIVE_VERTICAL;
+  mt.value = ACTIVE_TYPE;
 
-  // Sync current values
-  modalVert.value = ACTIVE_VERTICAL;
-  modalType.value = ACTIVE_TYPE;
-
-  // Bind events to update both main and modal
-  modalVert.onchange = () => {
-    ACTIVE_VERTICAL = modalVert.value;
-    mainVert.value = ACTIVE_VERTICAL;
+  mv.onchange = () => {
+    ACTIVE_VERTICAL = mv.value;
+    syncAllFilters();
     updateVerticalDescription();
     updateModalVerticalDescription();
     renderFilteredPublications();
     renderModalPublications();
   };
 
-  modalType.onchange = () => {
-    ACTIVE_TYPE = modalType.value;
-    mainType.value = ACTIVE_TYPE;
+  mt.onchange = () => {
+    ACTIVE_TYPE = mt.value;
+    syncAllFilters();
     renderFilteredPublications();
     renderModalPublications();
   };
 
-  const modalClear = document.getElementById("modal-clear-filters");
-  if (modalClear) {
-    modalClear.onclick = () => {
-      ACTIVE_VERTICAL = "all";
-      ACTIVE_TYPE = "all";
-      mainVert.value = "all";
-      mainType.value = "all";
-      modalVert.value = "all";
-      modalType.value = "all";
-      updateVerticalDescription();
-      updateModalVerticalDescription();
-      renderFilteredPublications();
-      renderModalPublications();
-    };
-  }
+  document.getElementById("modal-clear-filters").onclick = clearAllFilters;
 }
 
 function updateModalVerticalDescription() {
-  const desc = document.getElementById("modal-vertical-description");
-  if (!desc) return;
+  const c = document.getElementById("modal-vertical-description");
+  if (!c) return;
 
-  if (ACTIVE_VERTICAL === "all" || !VERTICAL_META[ACTIVE_VERTICAL]) {
-    desc.style.display = "none";
-    desc.innerHTML = "";
-  } else {
-    desc.style.display = "block";
-    desc.innerHTML = VERTICAL_META[ACTIVE_VERTICAL];
+  const title = VERTICAL_NAMES[ACTIVE_VERTICAL];
+  const desc = VERTICAL_META[ACTIVE_VERTICAL];
+  const video = VERTICAL_VIDEO[ACTIVE_VERTICAL];
+
+  if (ACTIVE_VERTICAL === "all") {
+    c.style.display = desc ? "block" : "none";
+    c.innerHTML = desc ? `<p>${desc}</p>` : "";
+    modalPlayer = null; // Clear reference
+    return;
+  }
+
+  c.innerHTML = `
+    <div class="row g-3 align-items-start">
+      <div class="col-md-8">
+        <h5 class="mb-2">${title}</h5>
+        <p>${desc}</p>
+      </div>
+      <div class="col-md-4">
+        ${renderVideoEmbed(video, true)}
+      </div>
+    </div>
+  `;
+  c.style.display = "block";
+
+  if (video) {
+    setTimeout(() => {
+      modalPlayer = initYouTubePlayer('modal-youtube-player', function (event) {
+        console.log('Modal player ready');
+      });
+    }, 200);
   }
 }
 
-function renderModalPublications() {
-  const container = document.getElementById("modal-publications-content");
-  if (!container || !window.__PUBS__) return;
-
-  const pubs = window.__PUBS__.filter(p => {
-    const vOk = ACTIVE_VERTICAL === "all" || p.research_vertical === ACTIVE_VERTICAL;
-    const tOk = ACTIVE_TYPE === "all" || p.publication_type === ACTIVE_TYPE;
-    return vOk && tOk;
-  });
-
-  container.innerHTML = createPublicationsGrid(pubs);
-  
-  // Enable clicks in modal - need to wait for DOM update
-  setTimeout(() => enablePublicationClicks(), 50);
-}
-
-function updateVerticalDescription() {
-  const desc = document.getElementById("vertical-description");
-  if (desc) {
-    if (ACTIVE_VERTICAL === "all" || !VERTICAL_META[ACTIVE_VERTICAL]) {
-      desc.style.display = "none";
-      desc.innerHTML = "";
-    } else {
-      desc.style.display = "block";
-      desc.innerHTML = VERTICAL_META[ACTIVE_VERTICAL];
-    }
-  }
-
-  // Update mobile description too
-  const mDesc = document.querySelector(".vertical-description");
-  if (mDesc) {
-    if (ACTIVE_VERTICAL === "all" || !VERTICAL_META[ACTIVE_VERTICAL]) {
-      mDesc.style.display = "none";
-      mDesc.innerHTML = "";
-    } else {
-      mDesc.style.display = "block";
-      mDesc.innerHTML = VERTICAL_META[ACTIVE_VERTICAL];
-    }
-  }
-}
+/* ========================================================= */
+/* ======================== RENDER ========================= */
+/* ========================================================= */
 
 function renderFilteredPublications() {
-  const container = document.getElementById("publications-content");
-  const mobileContainer = document.getElementById("publications-content-mobile");
-  
-  if (!container || !window.__PUBS__) return;
+  const c = document.getElementById("publications-content");
+  const m = document.getElementById("publications-content-mobile");
+  if (!c) return;
 
-  const pubs = window.__PUBS__.filter(p => {
-    const vOk = ACTIVE_VERTICAL === "all" || p.research_vertical === ACTIVE_VERTICAL;
-    const tOk = ACTIVE_TYPE === "all" || p.publication_type === ACTIVE_TYPE;
-    return vOk && tOk;
-  });
+  const pubs = window.__PUBS__.filter(p =>
+    (ACTIVE_VERTICAL === "all" || p.research_vertical === ACTIVE_VERTICAL) &&
+    (ACTIVE_TYPE === "all" || p.publication_type === ACTIVE_TYPE)
+  );
 
-  // Create the grid HTML
-  const gridHTML = createPublicationsGrid(pubs);
+  const html = createPublicationsGrid(pubs);
+  c.innerHTML = html;
+  if (m) m.innerHTML = html;
 
-  // Update desktop
-  container.innerHTML = gridHTML;
-
-  // Update mobile
-  if (mobileContainer) {
-    mobileContainer.innerHTML = gridHTML;
-  }
-
-  // Sync mobile filters
   syncMobileFilters();
-
-  // Enable clicks
   enablePublicationClicks();
-  
-  // Update sticky position after content changes
   setTimeout(updateStickyFilterPosition, 100);
 }
 
+function renderModalPublications() {
+  const c = document.getElementById("modal-publications-content");
+  if (!c) return;
+
+  const pubs = window.__PUBS__.filter(p =>
+    (ACTIVE_VERTICAL === "all" || p.research_vertical === ACTIVE_VERTICAL) &&
+    (ACTIVE_TYPE === "all" || p.publication_type === ACTIVE_TYPE)
+  );
+
+  c.innerHTML = createPublicationsGrid(pubs);
+  setTimeout(enablePublicationClicks, 50);
+}
+
+/* ========================================================= */
+/* ========================= GRID ========================== */
+/* ========================================================= */
+
 function createPublicationsGrid(pubs) {
-  let html = '<div class="row row-cols-1 row-cols-md-3 g-3" data-role="pub-grid">';
-  
-  pubs.forEach((pub) => {
-    const pubIndex = window.__PUBS__.indexOf(pub);
-    
-    // Get readable names for vertical and type
-    const verticalName = getVerticalName(pub.research_vertical);
-    const typeName = getTypeName(pub.publication_type);
-    
+  let html = `<div class="row row-cols-1 row-cols-md-3 g-3" data-role="pub-grid">`;
+
+  pubs.forEach(pub => {
+    const idx = window.__PUBS__.indexOf(pub);
+    const verticalName = VERTICAL_NAMES[pub.research_vertical] || pub.research_vertical;
+    const typeName = TYPE_NAMES[pub.publication_type] || pub.publication_type;
+
     html += `
       <div class="col">
-        <div class="card pub-card h-100">
-          <img src="${pub.thumbnail}"
-               class="card-img-top pub-thumb"
-               data-pub-index="${pubIndex}"
-               style="cursor:pointer">
-
+        <div class="card h-100">
+          <img src="${pub.thumbnail}" class="card-img-top pub-thumb" data-pub-index="${idx}" style="cursor:pointer">
           <div class="card-body d-flex flex-column">
-            <h6 class="card-title">${pub.title}</h6>
-            <p class="small mb-1">${pub.authors}</p>
-            <p class="small text-muted mb-2">${pub.venue}</p>
+            <h6>${pub.title}</h6>
+            <p class="small">${pub.authors}</p>
+            <p class="small text-muted">${pub.venue}</p>
             
             <div class="mb-2 d-flex gap-2 flex-wrap">
               <span class="badge bg-primary filter-badge" 
                     data-filter-type="vertical" 
                     data-filter-value="${pub.research_vertical}"
-                    role="button"
-                    tabindex="0"
                     style="cursor:pointer">${verticalName}</span>
               <span class="badge bg-secondary filter-badge" 
                     data-filter-type="type" 
                     data-filter-value="${pub.publication_type}"
-                    role="button"
-                    tabindex="0"
                     style="cursor:pointer">${typeName}</span>
             </div>
-
+            
             <div class="mt-auto d-flex gap-2">
               ${pub.pdf ? `<a href="${pub.pdf}" class="btn btn-sm btn-outline-primary">PDF</a>` : ""}
               ${pub.website ? `<a href="${pub.website}" class="btn btn-sm btn-outline-secondary">Website</a>` : ""}
             </div>
           </div>
         </div>
-      </div>
-    `;
+      </div>`;
   });
-  
-  html += '</div>';
-  return html;
+
+  return html + `</div>`;
 }
 
+/* ========================================================= */
+/* =================== MOBILE FILTER SYNC ================== */
+/* ========================================================= */
+
 function syncMobileFilters() {
-  const dVert = document.getElementById("filter-vertical");
-  const dType = document.getElementById("filter-type");
+  const dv = document.getElementById("filter-vertical");
+  const dt = document.getElementById("filter-type");
+  const mv = document.querySelector(".filter-vertical");
+  const mt = document.querySelector(".filter-type");
 
-  const mVert = document.querySelector(".filter-vertical");
-  const mType = document.querySelector(".filter-type");
-  const mClear = document.querySelector(".clear-filters");
+  if (!mv || !mt) return;
 
-  if (!dVert || !mVert) return;
+  mv.innerHTML = dv.innerHTML;
+  mt.innerHTML = dt.innerHTML;
+  mv.value = ACTIVE_VERTICAL;
+  mt.value = ACTIVE_TYPE;
 
-  // Copy options
-  mVert.innerHTML = dVert.innerHTML;
-  mType.innerHTML = dType.innerHTML;
-
-  // Sync state
-  mVert.value = ACTIVE_VERTICAL;
-  mType.value = ACTIVE_TYPE;
-
-  // Bind events
-  mVert.onchange = e => {
+  mv.onchange = e => {
     ACTIVE_VERTICAL = e.target.value;
+    syncAllFilters();
     updateVerticalDescription();
     renderFilteredPublications();
   };
 
-  mType.onchange = e => {
+  mt.onchange = e => {
     ACTIVE_TYPE = e.target.value;
+    syncAllFilters();
     renderFilteredPublications();
   };
-
-  if (mClear) {
-    mClear.onclick = () => {
-      ACTIVE_VERTICAL = "all";
-      ACTIVE_TYPE = "all";
-      dVert.value = "all";
-      dType.value = "all";
-      mVert.value = "all";
-      mType.value = "all";
-      updateVerticalDescription();
-      renderFilteredPublications();
-    };
-  }
 }
