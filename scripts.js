@@ -835,3 +835,66 @@ document.addEventListener("DOMContentLoaded", () => {
     )
     .forEach(el => el.classList.add("desc-fade-in"));
 });
+
+(function () {
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+  const saved = localStorage.getItem("theme");
+
+  // Apply saved preference or system preference
+  if (saved === "dark") {
+    document.body.classList.add("dark-mode");
+    document.body.classList.remove("light-mode");
+  } else if (saved === "light") {
+    document.body.classList.add("light-mode");
+    document.body.classList.remove("dark-mode");
+  } else if (prefersDark.matches) {
+    // No saved preference, use system
+    document.body.classList.remove("light-mode");
+    // Don't add dark-mode class - let CSS handle it via media query
+  }
+
+  // Create toggle button
+  const btn = document.createElement("button");
+  btn.id = "dark-mode-toggle";
+  btn.setAttribute("aria-label", "Toggle dark mode");
+  btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+
+  document.body.appendChild(btn);
+
+  function updateIcon() {
+    const isDark = document.body.classList.contains("dark-mode") || 
+                   (!document.body.classList.contains("light-mode") && prefersDark.matches);
+    
+    btn.innerHTML = isDark
+      ? '<i class="fa-solid fa-sun"></i>'
+      : '<i class="fa-solid fa-moon"></i>';
+  }
+
+  updateIcon();
+
+  btn.addEventListener("click", () => {
+    const isDark = document.body.classList.contains("dark-mode") || 
+                   (!document.body.classList.contains("light-mode") && prefersDark.matches);
+    
+    if (isDark) {
+      // Switch to light
+      document.body.classList.add("light-mode");
+      document.body.classList.remove("dark-mode");
+      localStorage.setItem("theme", "light");
+    } else {
+      // Switch to dark
+      document.body.classList.add("dark-mode");
+      document.body.classList.remove("light-mode");
+      localStorage.setItem("theme", "dark");
+    }
+    
+    updateIcon();
+  });
+
+  // React to OS changes only if user hasn't overridden
+  prefersDark.addEventListener("change", e => {
+    if (!localStorage.getItem("theme")) {
+      updateIcon();
+    }
+  });
+})();
