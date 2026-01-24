@@ -235,20 +235,84 @@ body {
 
 /* Sticky tabs for mobile */
 @media (max-width: 767.98px) {
-    .nav-tabs {
-        position: sticky;
-        top: 0;
-        z-index: 1020;
-        background-color: #f8f9fa;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    /* Ensure tab content scrolls below sticky tabs */
-    .tab-content {
-        position: relative;
-        z-index: 1;
-    }
+  .nav-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    background-color: #f8f9fa;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Ensure tab content scrolls below sticky tabs */
+  .tab-content {
+    position: relative;
+    z-index: 1;
+  }
 }
 
+@media (max-width: 767.98px) {
+  #filters-mobile .row.g-1 {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  /* Ensure the 1-column button is square-ish and visible */
+  #filters-mobile .col-1 {
+    min-width: 35px;
+    /* Ensures the button doesn't disappear on tiny screens */
+  }
+
+  #filters-mobile .btn-sm {
+    height: 31px;
+    /* Matches standard Bootstrap sm-input height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Tighten select padding so text remains visible */
+  .filter-vertical,
+  .filter-type {
+    font-size: 0.75rem;
+    padding-left: 4px;
+    padding-right: 20px;
+    /* Space for the arrow */
+  }
+}
+
+/* Unified Filter Styles for all views */
+.row.g-1.align-items-center .col-11 {
+  flex: 0 0 91.666667%;
+  /* Force 11/12 ratio */
+  max-width: 91.666667%;
+}
+
+.row.g-1.align-items-center .col-1 {
+  flex: 0 0 8.333333%;
+  /* Force 1/12 ratio */
+  max-width: 8.333333%;
+  min-width: 35px;
+  /* Prevent icon from disappearing */
+}
+
+/* Ensure the selects and button heights align perfectly */
+#filter-vertical,
+#filter-type,
+#clear-filters {
+  height: 31px;
+  font-size: 0.85rem;
+}
+
+/* Modal specific sizing (standard size instead of -sm) */
+#modal-filter-vertical,
+#modal-filter-type,
+#modal-clear-filters {
+  height: 38px;
+}
+
+/* Keep the undo icon centered */
+.btn i.fa-undo {
+  font-size: 0.9rem;
+}

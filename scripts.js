@@ -401,7 +401,7 @@ function loadFilters() {
     };
 
     document.getElementById("clear-filters").onclick = clearAllFilters;
-    
+
     // Mobile clear button uses a class, not ID
     const clearMobile = document.querySelector(".clear-filters");
     if (clearMobile) {
@@ -422,7 +422,7 @@ function clearAllFilters() {
   syncAllFilters();
   updateVerticalDescription();
   renderFilteredPublications();
-  
+
   const modal = document.getElementById("publicationsModal");
   if (modal && modal.classList.contains("show")) {
     updateModalVerticalDescription();
@@ -497,12 +497,12 @@ function renderVerticalBlock(container, isMobile) {
   } else {
     html = `
       <div class="row g-3 align-items-start">
+        <div class="col-md-4">
+          ${renderVideoEmbed(video, false)}
+        </div>
         <div class="col-md-8">
           <h5 class="mb-2">${title}</h5>
           <p>${desc}</p>
-        </div>
-        <div class="col-md-4">
-          ${renderVideoEmbed(video, false)}
         </div>
       </div>
     `;
@@ -599,12 +599,12 @@ function updateModalVerticalDescription() {
 
   c.innerHTML = `
     <div class="row g-3 align-items-start">
+      <div class="col-md-4">
+        ${renderVideoEmbed(video, true)}
+      </div>
       <div class="col-md-8">
         <h5 class="mb-2">${title}</h5>
         <p>${desc}</p>
-      </div>
-      <div class="col-md-4">
-        ${renderVideoEmbed(video, true)}
       </div>
     </div>
   `;

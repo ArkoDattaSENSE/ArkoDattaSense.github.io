@@ -103,20 +103,25 @@
                     <div id="publications-wrapper">
                         <!-- FILTERS live here -->
                         <div class="mb-3">
-                            <div class="row g-2 align-items-center">
-                                <div class="col-12 col-md-4">
-                                    <select id="filter-vertical" class="form-select form-select-sm"></select>
+                            <div class="row g-1 align-items-center">
+                                <div class="col-11">
+                                    <div class="row g-1">
+                                        <div class="col-6">
+                                            <select id="filter-vertical" class="form-select form-select-sm"></select>
+                                        </div>
+                                        <div class="col-6">
+                                            <select id="filter-type" class="form-select form-select-sm"></select>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-12 col-md-4">
-                                    <select id="filter-type" class="form-select form-select-sm"></select>
-                                </div>
-                                <div class="col-12 col-md-4 text-md-end">
-                                    <button id="clear-filters" class="btn btn-sm btn-outline-secondary w-100 w-md-auto">
-                                        Clear Filters
+                                <div class="col-1 px-0">
+                                    <button id="clear-filters"
+                                        class="btn btn-sm btn-outline-secondary w-100 d-flex justify-content-center align-items-center"
+                                        title="Clear Filters" style="height: 31px;">
+                                        <i class="fa-solid fa-undo"></i>
                                     </button>
                                 </div>
                             </div>
-
                             <div id="vertical-description" class="mt-2 small text-muted" style="display:none"></div>
                         </div>
 
@@ -183,11 +188,27 @@
 
             <!-- MOBILE FILTERS -->
             <div class="mb-3" id="filters-mobile">
-                <select class="form-select form-select-sm mb-2 filter-vertical"></select>
-                <select class="form-select form-select-sm mb-2 filter-type"></select>
-                <button class="btn btn-sm btn-outline-secondary w-100 clear-filters">
-                    Clear Filters
-                </button>
+                <div class="row g-1 align-items-center">
+                    <div class="col-11">
+                        <div class="row g-1">
+                            <div class="col-6">
+                                <select class="form-select form-select-sm filter-vertical"></select>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-select form-select-sm filter-type"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-1 px-0">
+                        <button
+                            class="btn btn-sm btn-outline-secondary w-100 clear-filters d-flex justify-content-center align-items-center"
+                            title="Clear Filters" style="padding: 5px 0;">
+                            <i class="fa-solid fa-undo"></i>
+                        </button>
+                    </div>
+                </div>
+
                 <div class="mt-2 small text-muted vertical-description" style="display:none"></div>
             </div>
             <div class="d-md-none mb-2 text-muted">
@@ -241,16 +262,22 @@
                 <div class="container-fluid">
                     <!-- FILTERS -->
                     <div class="mb-4">
-                        <div class="row g-2 align-items-center">
-                            <div class="col-12 col-md-4">
-                                <select id="modal-filter-vertical" class="form-select"></select>
+                        <div class="row g-1 align-items-center">
+                            <div class="col-11">
+                                <div class="row g-1">
+                                    <div class="col-6">
+                                        <select id="modal-filter-vertical" class="form-select"></select>
+                                    </div>
+                                    <div class="col-6">
+                                        <select id="modal-filter-type" class="form-select"></select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-12 col-md-4">
-                                <select id="modal-filter-type" class="form-select"></select>
-                            </div>
-                            <div class="col-12 col-md-4 text-md-end">
-                                <button id="modal-clear-filters" class="btn btn-outline-secondary w-100 w-md-auto">
-                                    Clear Filters
+                            <div class="col-1 px-0">
+                                <button id="modal-clear-filters"
+                                    class="btn btn-outline-secondary w-100 d-flex justify-content-center align-items-center"
+                                    title="Clear Filters" style="height: 38px;">
+                                    <i class="fa-solid fa-undo"></i>
                                 </button>
                             </div>
                         </div>

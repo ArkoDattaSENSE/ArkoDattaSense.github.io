@@ -2,19 +2,19 @@
   {
     "id": "all",
     "name": "All Research Areas",
-    "description": "You can filter by each research area to know more about my contribution in each, along with the relevant papers.",
+    "description": "I am currently working in wireless sensing and localization domain. I also have expertise in building systems for air quality monitoring. You can filter by each research area to know more about my contribution in each, along with the relevant papers.",
     "video":""
   },
   {
     "id": "Wireless Sensing",
     "name": "Wireless Sensing",
-    "description": "Systems and algorithms for RF-based localization, navigation, and positioning in complex environments using multimodal sensing.",
-    "video":""
+    "description": "I am involved in developing systems for orchestrating wireless infrastructure for sensing and communication purposes. My research involves using visual priors to maintain digital twins and use them to take informed decisions, making proactive and dynamic infrastructures possible.",
+    "video":"https://www.youtube.com/watch?v=NNSm4e_TFxA"
   },
   {
     "id": "Environment Monitoring",
-    "name": "Environment Monitoring",
-    "description": "Resource-constrained intelligent sensing systems using TinyML, adaptive sampling, and fault detection.",
+    "name": "Air Quality Monitoring",
+    "description": "During my M.Tech., I worked in building systems for air quality monitoring. I have developed methods for automated sensor drift detection, sensor validation, and automated mitigation suggestions.",
     "video":"https://www.youtube.com/watch?v=fYDe7aLHTiQ"
   }
 ]
