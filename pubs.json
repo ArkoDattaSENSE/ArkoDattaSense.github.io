@@ -7,7 +7,7 @@
       "venue": "PerCom 2026",
       "abstract": "Performance of wireless navigation systems degrade sharply in industrial environments dominated by metallic clutter and heavy multipath. The primary cause lies in how anchors are placed or selected. Methods that succeed in open spaces fail under severe non-line-of-sight (nLoS) and frequent layout changes, for instance, induced by moving forklifts or shifting shelves. We introduce Argos, a multimodal wireless digital twin that fuses visual and RF information to optimize anchor selection. Visual imagery reconstructs the 3D layout, updated continuously via existing surveillance cameras, while RF measurements capture material-specific attenuation and reflections. We show that layout priors alone are insufficient; combining them with the required RF optics yields a material-aware channel model that predicts range errors under severe nLoS. Argos adapts proactively to environmental changes, without the requirement of repeated RF calibration or retraining, sustaining sub-meter localization accuracy in dynamic scenes. We validate Argos in a 120 m<sup>2</sup> factory testbed spanning over 700 locations, where the digital twin is built from 5K RGB images and 0.4M UWB CIR samples. To our knowledge, this is the first system to exploit visual priors for adaptive orchestration of wireless navigation infrastructure.",
       "pdf": "assets/argos_paper.pdf",
-      "website": "https://vizloc.github.io/demo-vis/",
+      "website": "https://sense.cse.iitm.ac.in/argos/",
       "research_vertical": "Wireless Sensing",
       "publication_type": "Conference",
       "video":"https://www.youtube.com/watch?v=NNSm4e_TFxA"
