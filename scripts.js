@@ -486,14 +486,18 @@ function renderVerticalBlock(container, isMobile) {
   if (!container) return;
 
   const title = VERTICAL_NAMES[ACTIVE_VERTICAL];
-  const desc = VERTICAL_META[ACTIVE_VERTICAL];
+  const desc  = VERTICAL_META[ACTIVE_VERTICAL];
   const video = VERTICAL_VIDEO[ACTIVE_VERTICAL];
 
-  // Show description for "all" without title
+  // ---------- ALL VERTICAL ----------
   if (ACTIVE_VERTICAL === "all") {
     if (desc) {
       container.style.display = "block";
-      container.innerHTML = `<p>${desc}</p>`;
+      container.innerHTML = `
+        <div class="vertical-desc-card">
+          <p>${desc}</p>
+        </div>
+      `;
     } else {
       container.style.display = "none";
       container.innerHTML = "";
@@ -502,30 +506,35 @@ function renderVerticalBlock(container, isMobile) {
     return;
   }
 
+  // ---------- SPECIFIC VERTICAL ----------
   let html = "";
 
   if (!video) {
     html = `
-      <div class="col-12">
+      <div class="vertical-desc-card">
         <h5 class="mb-2">${title}</h5>
         <p>${desc}</p>
       </div>
     `;
   } else if (isMobile) {
     html = `
-      <h5 class="mb-2">${title}</h5>
-      <p>${desc}</p>
-      ${renderVideoEmbed(video, false)}
+      <div class="vertical-desc-card">
+        <h5 class="mb-2">${title}</h5>
+        <p>${desc}</p>
+        ${renderVideoEmbed(video, false)}
+      </div>
     `;
   } else {
     html = `
-      <div class="row g-3 align-items-start">
-        <div class="col-md-4">
-          ${renderVideoEmbed(video, false)}
-        </div>
-        <div class="col-md-8">
-          <h5 class="mb-2">${title}</h5>
-          <p>${desc}</p>
+      <div class="vertical-desc-card">
+        <div class="row g-3 align-items-start">
+          <div class="col-md-4">
+            ${renderVideoEmbed(video, false)}
+          </div>
+          <div class="col-md-8">
+            <h5 class="mb-2">${title}</h5>
+            <p>${desc}</p>
+          </div>
         </div>
       </div>
     `;
@@ -534,14 +543,16 @@ function renderVerticalBlock(container, isMobile) {
   container.style.display = "block";
   container.innerHTML = html;
 
+  // ---------- INIT VIDEO ----------
   if (video) {
     setTimeout(() => {
-      mainPlayer = initYouTubePlayer('main-youtube-player', function (event) {
-        console.log('Main player ready');
+      mainPlayer = initYouTubePlayer("main-youtube-player", () => {
+        console.log("Main player ready");
       });
     }, 100);
   }
 }
+
 
 /* ========================================================= */
 /* ========================= MODAL ========================= */
@@ -890,3 +901,5 @@ window.addEventListener("load", () => {
     tabContent.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
+
+document.addEventListener("click", e => e.target.closest("a")?.setAttribute("target", "_blank"));

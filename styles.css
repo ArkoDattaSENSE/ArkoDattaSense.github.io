@@ -74,7 +74,7 @@ body {
   min-height: 0;
 }
 
-.content-row > [class*="col-"] {
+.content-row>[class*="col-"] {
   height: 100%;
 }
 
@@ -148,12 +148,14 @@ body {
   margin-bottom: 0;
 }
 
-.pub-card img {
+.card-img-top.pub-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 10;   /* or 4 / 3 if you prefer */
+  object-fit: cover;
+  height: auto;           /* IMPORTANT: override Bootstrap */
   cursor: pointer;
-  max-width: 100%;
-  height: auto;
-  display: block;
 }
+
 
 /* ===================================================== */
 /* ================= NEWS ============================== */
@@ -229,7 +231,7 @@ body {
     flex: none;
   }
 
-  .content-row > [class*="col-"] {
+  .content-row>[class*="col-"] {
     height: auto;
   }
 
@@ -337,6 +339,7 @@ select,
 
 /* Mobile-only filter tweaks */
 @media (max-width: 767.98px) {
+
   .filter-vertical,
   .filter-type {
     background-image: none !important;
@@ -374,7 +377,7 @@ select,
     align-items: center;
     justify-content: center;
 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 
     opacity: 0;
     pointer-events: none;
@@ -402,16 +405,26 @@ select,
   transition: opacity 180ms ease;
 }
 
-.pub-fade-out { opacity: 0; }
-.pub-fade-in  { opacity: 1; }
+.pub-fade-out {
+  opacity: 0;
+}
+
+.pub-fade-in {
+  opacity: 1;
+}
 
 #vertical-description,
 .vertical-description {
   transition: opacity 180ms ease;
 }
 
-.desc-fade-out { opacity: 0; }
-.desc-fade-in  { opacity: 1; }
+.desc-fade-out {
+  opacity: 0;
+}
+
+.desc-fade-in {
+  opacity: 1;
+}
 
 
 /* ================= IMPROVED DARK MODE ==================== */
@@ -422,158 +435,158 @@ select,
     background: #1a1d29;
     color: #e8eaf0;
   }
-  
+
   body:not(.light-mode) .banner-overlay {
     background: rgba(26, 29, 41, 0.88);
   }
-  
+
   body:not(.light-mode) .section-card {
     background: linear-gradient(145deg, #232838, #1f2330);
     border-color: #3a3f52;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
-  
+
   body:not(.light-mode) .section-header {
     border-bottom-color: #404866;
     color: #f5f6fa;
   }
-  
+
   body:not(.light-mode) .section-header small,
   body:not(.light-mode) .text-muted {
     color: #a5aab8 !important;
   }
-  
+
   body:not(.light-mode) .section-body::-webkit-scrollbar-track {
     background: #252936;
   }
-  
+
   body:not(.light-mode) .section-body::-webkit-scrollbar-thumb {
     background: #4a5268;
     border-radius: 4px;
   }
-  
+
   body:not(.light-mode) .section-body::-webkit-scrollbar-thumb:hover {
     background: #5d6786;
   }
-  
+
   body:not(.light-mode) .nav-tabs {
     background-color: #1a1d29;
     border-bottom-color: #3a3f52;
   }
-  
+
   body:not(.light-mode) .nav-tabs .nav-link {
     color: #c5c9d6;
     border-color: transparent;
   }
-  
+
   body:not(.light-mode) .nav-tabs .nav-link:hover {
     color: #e8eaf0;
     background-color: #252936;
   }
-  
+
   body:not(.light-mode) .nav-tabs .nav-link.active {
     background: linear-gradient(145deg, #232838, #1f2330);
     border-color: #3a3f52 #3a3f52 transparent;
     color: #ffffff;
   }
-  
+
   body:not(.light-mode) .modal-content {
     background: linear-gradient(145deg, #232838, #1f2330);
     color: #e8eaf0;
     border-color: #3a3f52;
   }
-  
+
   body:not(.light-mode) .modal-header,
   body:not(.light-mode) .modal-footer {
     border-color: #3a3f52;
   }
-  
+
   body:not(.light-mode) .btn-outline-primary {
     color: #7db3ff;
     border-color: #4a7bc8;
   }
-  
+
   body:not(.light-mode) .btn-outline-primary:hover {
     background-color: #4a7bc8;
     color: #ffffff;
     border-color: #4a7bc8;
   }
-  
+
   body:not(.light-mode) .btn-outline-secondary {
     color: #c5c9d6;
     border-color: #4a5268;
   }
-  
+
   body:not(.light-mode) .btn-outline-secondary:hover {
     background-color: #4a5268;
     color: #ffffff;
     border-color: #4a5268;
   }
-  
+
   body:not(.light-mode) a {
     color: #7db3ff;
   }
-  
+
   body:not(.light-mode) a:hover {
     color: #a5cfff;
   }
-  
+
   body:not(.light-mode) .card {
     background: linear-gradient(145deg, #252a3d, #212533);
     border-color: #3a3f52;
     color: #e8eaf0;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   }
-  
+
   body:not(.light-mode) .card-body {
     background: transparent;
   }
-  
+
   body:not(.light-mode) .card:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
   }
-  
+
   body:not(.light-mode) .footer {
     background: #1f2330;
     border-top: 1px solid #3a3f52;
   }
-  
+
   body:not(.light-mode) .pub-card img {
     filter: brightness(0.88) contrast(1.08);
   }
-  
+
   body:not(.light-mode) .pub-card:hover img {
     filter: brightness(1) contrast(1.12);
   }
-  
+
   /* Form controls */
   body:not(.light-mode) .form-select {
     background-color: #252a3d;
     border-color: #3a3f52;
     color: #e8eaf0;
   }
-  
+
   body:not(.light-mode) .form-select:focus {
     background-color: #252a3d;
     border-color: #5d6786;
     color: #e8eaf0;
     box-shadow: 0 0 0 0.2rem rgba(74, 123, 200, 0.25);
   }
-  
+
   body:not(.light-mode) .form-select option {
     background-color: #252a3d;
     color: #e8eaf0;
   }
-  
+
   body:not(.light-mode) .btn-close {
     filter: invert(1) grayscale(100%) brightness(200%);
   }
-  
+
   /* Badges */
   body:not(.light-mode) .badge.bg-primary {
     background-color: #4a7bc8 !important;
   }
-  
+
   body:not(.light-mode) .badge.bg-secondary {
     background-color: #4a5268 !important;
   }
@@ -762,7 +775,7 @@ body.light-mode .card {
     background: #1f2330 !important;
     border-top: 1px solid #3a3f52;
   }
-  
+
   body:not(.light-mode) .bg-light {
     background: #1f2330 !important;
   }
@@ -803,7 +816,7 @@ body.dark-mode .bg-light {
   cursor: pointer;
   z-index: 2000;
 
-  box-shadow: -4px 0 10px rgba(0,0,0,0.15);
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.15);
   padding-right: 20px;
   transition:
     background 180ms ease,
@@ -816,11 +829,18 @@ body.dark-mode #dark-mode-toggle {
   background: #232838;
   border-color: #4a5268;
   color: #f5f6fa;
-  box-shadow: -4px 0 10px rgba(0,0,0,0.4);
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .vertical-desc-card,
+body:not(.light-mode) .vertical-desc-card {
+  background: linear-gradient(145deg, #232838, #1f2330);
+  border-color: #3a3f52;
 }
 
 #dark-mode-toggle:hover {
-  transform: translateX(-2px); /* subtle “peek” */
+  transform: translateX(-2px);
+  /* subtle “peek” */
 }
 
 #dark-mode-toggle i {
@@ -832,3 +852,61 @@ a {
   text-decoration: none !important;
 }
 
+/* ===================================================== */
+/* ============ VERTICAL DESCRIPTION CARD ============== */
+/* ===================================================== */
+
+.vertical-desc-card {
+  background: white;
+  border: 1px solid #d4e7f7;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Bigger, calmer typography */
+.vertical-desc-card h5 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.vertical-desc-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+
+}
+
+@media (min-width: 768px) {
+  .vertical-desc-card p {
+    font-size: 1rem;
+  }
+}
+
+/* ===================================================== */
+/* ===== DESKTOP GRID ROW HEIGHTS (60% / 40%) ========== */
+/* ===================================================== */
+
+@media (min-width: 768px) {
+  .content {
+    display: grid;
+    /* reinforce intent */
+    grid-template-rows: 60fr 40fr;
+    gap: 30px;
+    /* keep your existing spacing */
+    height: 90vh;
+    /* already present, but explicit */
+  }
+
+  .content-row {
+    height: 100%;
+    min-height: 0;
+    /* IMPORTANT for scrollable children */
+  }
+}
+
+#expand-publications.btn-outline-primary {
+  border: none;
+}
