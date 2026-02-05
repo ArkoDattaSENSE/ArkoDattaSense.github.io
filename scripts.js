@@ -486,7 +486,7 @@ function renderVerticalBlock(container, isMobile) {
   if (!container) return;
 
   const title = VERTICAL_NAMES[ACTIVE_VERTICAL];
-  const desc  = VERTICAL_META[ACTIVE_VERTICAL];
+  const desc = VERTICAL_META[ACTIVE_VERTICAL];
   const video = VERTICAL_VIDEO[ACTIVE_VERTICAL];
 
   // ---------- ALL VERTICAL ----------
@@ -723,7 +723,11 @@ function createPublicationsGrid(pubs) {
     html += `
       <div class="col">
         <div class="card h-100">
-          <img src="${pub.thumbnail}" class="card-img-top pub-thumb" data-pub-index="${idx}" style="cursor:pointer">
+          <img src="${pub.thumbnail}" 
+            loading="lazy"
+            decoding="async"
+            class="card-img-top pub-thumb"
+            data-pub-index="${idx}" style="cursor:pointer">
           <div class="card-body d-flex flex-column">
             <h6>${pub.title}</h6>
             <p class="small">${pub.authors}</p>
