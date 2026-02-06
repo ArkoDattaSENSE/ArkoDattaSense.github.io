@@ -1,7 +1,7 @@
 [
     {
       "order": 1,
-      "thumbnail": "assets/argos_thumb.png",
+      "thumbnail": "assets/argos_thumb.webp",
       "title": "ARGOS: Leveraging Visual Priors for Scalable Wireless Navigation in Dynamic Environments",
       "authors": "<b>Arko Datta</b>, Tharaneeshwaran V U, Aravindh Sriram Kumar A G, Ayon Chakraborty",
       "venue": "PerCom 2026",
@@ -14,7 +14,7 @@
     },
     {
         "order": 2,
-        "thumbnail": "assets/coms_poster_thumb.png",
+        "thumbnail": "assets/coms_poster_thumb.webp",
         "title": "Adaptive Threshold Learning for Robust First-Path Detection in UWB Ranging",
         "authors": "Shrishti Bekal Mudiakal, Akash Kumar Paul, <b>Arko Datta</b>, Ayon Chakraborty",
         "venue": "COMSNETS 2026",
@@ -27,7 +27,7 @@
       },
       {
         "order": 3,
-        "thumbnail": "assets/iAirGuard_thumb.png",
+        "thumbnail": "assets/iAirGuard_thumb.webp",
         "title": "iAirGuard: A Modular IoT Architecture with Dynamic Sampling and TinyML-Based Fault Detection for Air Quality Monitoring",
         "authors": "Molay Mondal, <b>Arko Datta</b>, Prashanth Durgam, Astom Mondal, Khushi Shyam, Khushi Shyam, Subrata Nandi, Sanghita Bhattacharjee and Sujoy Saha",
         "venue": "COMSNETS 2026",
@@ -40,7 +40,7 @@
       },
       {
         "order": 4,
-        "thumbnail": "assets/pollusensecheck.png",
+        "thumbnail": "assets/pollusensecheck.webp",
         "title": "PolluSenseCheck: Cost Effective TinyML-based Air Quality Monitoring System with In-Built Sensor Fault Detection",
         "authors": "<b>Arko Datta</b>, Joyita Chakraborty, Pabitra Majhi, Astom Mondal, Satyaki Roy, Subrata Nandi and Sujoy Saha",
         "venue": "COMSNETS 2025",
@@ -53,7 +53,7 @@
       },
       {
         "order": 5,
-        "thumbnail": "assets/icdcn_workshop_thumb.png",
+        "thumbnail": "assets/icdcn_workshop_thumb.webp",
         "title": "Efficient Air Quality Index Prediction on Resource-Constrained Devices using TinyML: Design, Implementation, and Evaluation",
         "authors": "<b>Arko Datta</b>, Aniruddha Pal, Ranbir Marandi, Nilanjan Chattaraj, Subrata Nandi, Sujoy Saha",
         "venue": "ICDCN 2024",
@@ -66,7 +66,7 @@
       },
       {
         "order": 6,
-        "thumbnail": "assets/icdcn_poster_thumb.png",
+        "thumbnail": "assets/icdcn_poster_thumb.webp",
         "title": "Real-Time Air Quality Predictions for Smart Cities using TinyML",
         "authors": "<b>Arko Datta</b>, Aniruddha Pal, Ranbir Marandi, Nilanjan Chattaraj, Subrata Nandi, Sujoy Saha",
         "venue": "ICDCN 2024",
